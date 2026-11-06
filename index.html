@@ -77,7 +77,7 @@
     polar:  { player:'#e2e8f0', trail1:'#94a3b8', trail2:'#cbd5e1', wall:'#94a3b8', spike:'#cbd5e1', glow:'rgba(148,163,184,.35)' }
   };
   let theme = 'aurora', icon = 'tri', trail = 'solid';
-  let state = 'menu', score = 0, best = +localStorage.getItem('wr_best')||0, speed = 320, dist = 0;
+  let state = 'menu', score = 0, best = +localStorage.getItem('wr_best')||0, speed = 360, dist = 0;
   let holding = false, player = {x:0,y:0,vy:0}, trailPts = [], particles = [];
   let walls = [], spikes = []; // world-space x
   let lastT = 0, spawnX = 0;
@@ -85,7 +85,7 @@
   const GROUND_Y = () => H()*0.85, CEIL_Y = () => H()*0.15;
 
   function reset(){
-    score = 0; dist = 0; speed = 320;
+    score = 0; dist = 0; speed = 360;
     player.x = W()*0.22; player.y = H()*0.5; player.vy = 0;
     trailPts = []; particles = []; walls = []; spikes = []; spawnX = player.x + 200;
     holding = false;
@@ -97,22 +97,25 @@
     const ahead = player.x + W()*1.5;
     while (spawnX < ahead){
       // corridor segment
-      const segW = 120 + Math.random()*80;
-      const baseTop = CEIL_Y() + 40 + Math.random()*60;
-      const baseBot = GROUND_Y() - 40 - Math.random()*60;
-      const slopeTop = (Math.random()-0.5)*0.4;
-      const slopeBot = (Math.random()-0.5)*0.4;
+      const segW = 100 + Math.random()*60;
+      const baseTop = CEIL_Y() + 20 + Math.random()*40;
+      const baseBot = GROUND_Y() - 20 - Math.random()*40;
+      const slopeTop = (Math.random()-0.5)*0.9;
+      const slopeBot = (Math.random()-0.5)*0.9;
       walls.push({x:spawnX, w:segW, top0:baseTop, slopeTop, bot0:baseBot, slopeBot});
       // maybe spike
-      if (Math.random() < 0.35){
-        const sx = spawnX + segW*0.5;
+      if (Math.random() < 0.6){
+        const sx = spawnX + segW*0.4;
         const sy = baseBot - 18;
-        spikes.push({x:sx,y:sy,w:24,h:24,side:'bottom'});
+        spikes.push({x:sx,y:sy,w:26,h:26,side:'bottom'});
       }
-      if (Math.random() < 0.25){
-        const sx = spawnX + segW*0.6;
+      if (Math.random() < 0.5){
+        const sx = spawnX + segW*0.65;
         const sy = baseTop + 18;
-        spikes.push({x:sx,y:sy,w:24,h:24,side:'top'});
+        spikes.push({x:sx,y:sy,w:26,h:26,side:'top'});
+      }
+      if (Math.random() < 0.35){
+        spikes.push({x:spawnX+segW*0.5, y:(baseTop+baseBot)/2, w:20, h:20, side:'mid'});
       }
       spawnX += segW;
     }
@@ -139,7 +142,7 @@
     if(score>best){ best=score; localStorage.setItem('wr_best',best); document.getElementById('best').textContent='best '+best;}
 
     // difficulty
-    speed = 320 + Math.min(260, score*0.6);
+    speed = 360 + Math.min(400, score*1.2);
 
     ensureWorld();
 
@@ -244,8 +247,10 @@
       ctx.beginPath();
       if(s.side==='bottom'){
         ctx.moveTo(sx, s.y); ctx.lineTo(sx+s.w/2, s.y-s.h); ctx.lineTo(sx+s.w, s.y);
-      } else {
+      } else if(s.side==='top'){
         ctx.moveTo(sx, s.y); ctx.lineTo(sx+s.w/2, s.y+s.h); ctx.lineTo(sx+s.w, s.y);
+      } else {
+        ctx.moveTo(sx+s.w/2, s.y-s.h); ctx.lineTo(sx+s.w, s.y); ctx.lineTo(sx+s.w/2, s.y+s.h); ctx.lineTo(sx, s.y);
       }
       ctx.closePath(); ctx.fill();
       ctx.restore();
