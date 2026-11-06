@@ -85,7 +85,7 @@
     arctic: { p:'#e2e8f0', t1:'#e2e8f0', t2:'#00ffaa', t3:'#94a3b8', wall:'#e2e8f0', hazard:'#00ffaa', glow:'rgba(226,232,240,.35)' }
   };
   let palette='aurora', shape='arrow', trailType='ribbon';
-  let state='menu', score=0, best=+localStorage.getItem('wr_best')||0, speed=360, dist=0;
+  let state='menu', score=0, best=+localStorage.getItem('wr_best')||0, speed=320, dist=0;
   let holding=false, player={x:0,y:0,vy:0}, trailBuf=[], particles=[];
   let walls=[], hazards=[], spawnX=0, lastT=0;
   const W=()=>innerWidth, H=()=>innerHeight;
@@ -95,14 +95,14 @@
   function noise(x){ return (Math.sin(x*0.0017)+Math.sin(x*0.0031+1.7)+Math.sin(x*0.0009+3.3))/3; }
 
   function reset(){
-    score=0; dist=0; speed=360;
+    score=0; dist=0; speed=320;
     player.x=W()*0.22; player.y=H()*0.5;
     trailBuf=[]; particles=[]; walls=[]; hazards=[]; spawnX=player.x+100;
     holding=false;
     document.getElementById('score').textContent='0';
   }
 
-  function gapWidth(){ return Math.max(150, 260 - score*0.04); }
+  function gapWidth(){ return Math.max(180, 280 - score*0.02); }
 
   function ensureWorld(){
     const ahead=player.x+W()*1.6;
@@ -136,7 +136,7 @@
 
   function update(dt){
     if(state!=='play') return;
-    speed = 360 + Math.min(500, score*1.5);
+    speed = 320 + Math.min(200, score*0.8);
     player.vy = holding ? -speed : speed;
     player.x += speed*dt;
     player.y += player.vy*dt;
@@ -174,9 +174,9 @@
     g.addColorStop(0,'#090b10'); g.addColorStop(1,'#121826');
     ctx.fillStyle=g; ctx.fillRect(0,0,W(),H());
     const layers=[
-      {c:'rgba(0,243,255,0.16)',amp:70,freq:0.0028,spd:0.00035,y:0.32},
-      {c:'rgba(112,0,255,0.14)',amp:90,freq:0.0022,spd:-0.00025,y:0.5},
-      {c:'rgba(0,255,170,0.12)',amp:60,freq:0.0035,spd:0.00045,y:0.68}
+      {c:'rgba(0,243,255,0.16)',amp:70,freq:0.0028,spd:0.00012,y:0.32},
+      {c:'rgba(112,0,255,0.14)',amp:90,freq:0.0022,spd:-0.00009,y:0.5},
+      {c:'rgba(0,255,170,0.12)',amp:60,freq:0.0035,spd:0.00015,y:0.68}
     ];
     layers.forEach(l=>{
       ctx.beginPath(); ctx.moveTo(0,H()*l.y);
