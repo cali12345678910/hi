@@ -3,21 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AuraPad — Ambient Synth &amp; Focus Workspace</title>
+<title>AuraPad</title>
 <style>
 :root{
-  --bg:#080a0f;
-  --panel:rgba(15,18,28,0.6);
-  --panel-border:1px solid rgba(255,255,255,0.06);
+  --bg:#07090e;
+  --panel:rgba(20,24,36,0.45);
+  --panel-border:1px solid rgba(255,255,255,0.04);
   --cyan:#00f3ff;
   --violet:#7000ff;
   --teal:#00ffaa;
   --lavender:#c4b5fd;
-  --text:#e8eaf2;
-  --muted:rgba(232,234,242,0.5);
-  --shadow:0 24px 60px rgba(0,0,0,0.5);
+  --text:#f2f4f8;
+  --muted:rgba(242,244,248,0.45);
+  --shadow:0 30px 80px rgba(0,0,0,0.55);
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 html,body{
   height:100%;
   background:var(--bg);
@@ -35,190 +39,174 @@ html,body{
   z-index:0;
   touch-action:none;
 }
+.cursor-none{
+  cursor:none;
+}
 header{
   position:fixed;
   top:0;
   left:0;
   right:0;
-  height:56px;
+  height:52px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 24px;
-  z-index:50;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  padding:0 28px;
+  z-index:60;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
   border-bottom:var(--panel-border);
-  background:rgba(8,10,15,0.55);
+  background:rgba(7,9,14,0.55);
 }
 .app-title{
-  font-size:15px;
+  font-size:14px;
   font-weight:700;
-  letter-spacing:1.5px;
+  letter-spacing:2px;
   text-transform:uppercase;
   color:var(--cyan);
-  display:flex;
-  align-items:center;
-  gap:8px;
+  opacity:0.9;
 }
-.title-dot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 12px var(--cyan);
-  animation:pulse 3s infinite;
-}
-@keyframes pulse{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:0.5;transform:scale(1.15)}
-}
-.header-right{display:flex;align-items:center;gap:14px}
-.sync-label{font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
 .workspace{
   position:relative;
   z-index:20;
-  padding:76px 24px 40px;
+  padding:72px 48px 60px;
   max-width:1100px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:340px 1fr;
-  gap:20px;
+  grid-template-columns:360px 1fr;
+  gap:32px;
   align-items:start;
 }
 @media (max-width:900px){
-  .workspace{grid-template-columns:1fr;padding-top:96px}
+  .workspace{
+    grid-template-columns:1fr;
+    padding-top:92px;
+    padding-left:24px;
+    padding-right:24px;
+  }
 }
 .panel{
   background:var(--panel);
   border:var(--panel-border);
-  border-radius:24px;
-  padding:28px;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  border-radius:28px;
+  padding:32px;
+  backdrop-filter:blur(26px);
+  -webkit-backdrop-filter:blur(26px);
   box-shadow:var(--shadow);
   opacity:1;
   pointer-events:auto;
-  transition:opacity 0.8s ease,pointer-events 0.8s ease;
+  transition:opacity 0.8s ease;
 }
 .panel.faded{opacity:0;pointer-events:none}
 .panel h2{
-  font-size:12px;
+  font-size:11px;
+  font-weight:700;
   text-transform:uppercase;
-  letter-spacing:2px;
+  letter-spacing:2.5px;
   color:var(--muted);
-  margin-bottom:22px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:600;
-}
-.panel h2 svg{width:13px;height:13px;color:var(--cyan);opacity:0.8}
-.channel{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.03);
-}
-.channel:last-child{border-bottom:none}
-.channel .chip{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  box-shadow:0 0 10px currentColor;
-}
-.channel label{flex:1;font-size:12.5px;color:var(--text);font-weight:500}
-.channel .toggle{
-  position:relative;
-  width:42px;
-  height:22px;
-  border-radius:11px;
-  border:1px solid rgba(255,255,255,0.14);
-  background:rgba(255,255,255,0.04);
-  cursor:pointer;
-  flex-shrink:0;
-}
-.toggle-thumb{
-  position:absolute;
-  top:2px;
-  left:2px;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:#fff;
-  transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);
-}
-.toggle.on{
-  border-color:transparent;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-}
-.toggle.on .toggle-thumb{transform:translateX(20px)}
-.slider-wrap{
-  flex:1;
+  margin-bottom:26px;
   display:flex;
   align-items:center;
   gap:9px;
 }
-input[type=range]{
-  -webkit-appearance:none;
+.panel h2 svg{
+  width:13px;
+  height:13px;
+  color:var(--cyan);
+  opacity:0.7;
+}
+
+/* ---------- Sound Mixer ---------- */
+.mixer-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.mixer-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.mixer-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  box-shadow:0 0 10px currentColor;
+  opacity:0.55;
+  flex-shrink:0;
+}
+.mixer-label{
+  flex:1;
+  font-size:12.5px;
+  font-weight:500;
+  color:var(--text);
+  opacity:0.9;
+}
+.mixer-slider{
+  width:110px;
   height:3px;
-  background:rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.05);
   border-radius:2px;
   outline:none;
-  width:100%;
+  appearance:none;
 }
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:12px;
-  height:12px;
+.mixer-slider::-webkit-slider-thumb{
+  appearance:none;
+  width:10px;
+  height:10px;
   border-radius:50%;
   background:#fff;
   cursor:pointer;
   box-shadow:0 0 8px rgba(255,255,255,0.35);
 }
-.val{font-size:10px;color:var(--muted);min-width:30px;text-align:right;font-variant-numeric:tabular-nums}
-.master{
-  margin-top:26px;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,0.05);
+.mixer-val{
+  font-size:10px;
+  color:var(--muted);
+  min-width:32px;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
 }
-.master .row{display:flex;align-items:center;gap:9px;margin-top:8px}
-.focus-col{display:flex;flex-direction:column;gap:18px}
-.timer{
+
+/* ---------- Pomodoro ---------- */
+.timer-wrap{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:10px;
+  gap:12px;
 }
 .time{
-  font-size:52px;
-  font-weight:800;
-  letter-spacing:-2px;
+  font-size:72px;
+  font-weight:400;
+  letter-spacing:-4px;
   font-variant-numeric:tabular-nums;
   color:#fff;
+  line-height:1;
 }
 .mode-chip{
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:1.6px;
-  padding:6px 14px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.04);
-  color:var(--cyan);
+  font-size:11px;
   font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1.8px;
+  padding:7px 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.03);
+  color:var(--cyan);
 }
 .timer-controls{
   display:flex;
   gap:10px;
-  margin-top:6px;
+  margin-top:4px;
 }
-.mode-row{display:flex;gap:8px}
+.mode-row{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
 .btn{
   border:none;
-  border-radius:12px;
-  padding:10px 16px;
+  border-radius:10px;
+  padding:9px 16px;
   font-size:12px;
   font-weight:600;
   cursor:pointer;
@@ -228,114 +216,118 @@ input[type=range]::-webkit-slider-thumb{
   color:var(--text);
   flex:1;
 }
-.btn:hover{background:rgba(255,255,255,0.1)}
+.btn:hover{
+  background:rgba(255,255,255,0.1);
+}
 .btn.primary{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   color:#fff;
   border-color:transparent;
-  box-shadow:0 0 18px rgba(0,243,255,0.3);
+  box-shadow:0 0 16px rgba(0,243,255,0.3);
 }
-.btn.secondary{background:transparent}
+.btn.secondary{
+  background:transparent;
+}
+.status{
+  font-size:10.5px;
+  color:var(--muted);
+  margin-top:10px;
+  min-height:13px;
+}
+.status.ok{color:var(--teal)}
+.status.dim{color:var(--muted);}
+
+/* ---------- Scratchpad ---------- */
 .notes textarea{
   width:100%;
-  height:210px;
+  height:200px;
   background:transparent;
   border:none;
   color:var(--text);
   font-family:inherit;
   font-size:13px;
-  line-height:1.8;
+  line-height:1.9;
   resize:none;
   outline:none;
   opacity:0.95;
   touch-action:auto;
 }
-.notes textarea::placeholder{color:rgba(232,234,242,0.3)}
-.status{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:8px;
-  min-height:14px;
+.notes textarea::placeholder{
+  color:rgba(242,244,248,0.28);
 }
-.status.ok{color:var(--teal)}
-.cursor-glow{
-  position:fixed;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:45;
-  mix-blend-mode:screen;
-  transition:left 0.15s ease,top 0.15s ease,width 0.5s ease,height 0.5s ease,opacity 0.6s ease;
-  opacity:0;
+.notes-status{
+  font-size:10.5px;
+  color:var(--muted);
+  margin-top:10px;
+  min-height:13px;
 }
 </style>
 </head>
 <body>
 <canvas id="aurora"></canvas>
-<div class="cursor-glow" id="cursorGlow"></div>
 <header>
-  <div class="app-title">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 3 11.21a9 9 0 0 0 9 7.58h0a7 7 0 0 0 7-6z"></path><path d="M12 7v5l4 3"></path></svg>
-    AuraPad
-  </div>
-  <div class="header-right">
-    <div style="display:flex;align-items:center;gap:8px">
-      <span class="sync-label">Audio-Visual Sync</span>
-      <div class="toggle" id="syncToggle"><div class="toggle-thumb"></div></div>
-    </div>
-  </div>
+  <div class="app-title">AuraPad</div>
 </header>
 <div class="workspace" id="workspace">
   <div class="panel" id="panelMixer">
-    <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
-    <div class="channel">
-      <div class="chip" style="background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></div>
-      <label>Deep Synth Hum</label>
-      <div class="toggle" id="togHum"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.5" id="volHum"><span class="val" id="valHum">50%</span></div>
-    </div>
-    <div class="channel">
-      <div class="chip" style="background:var(--teal);box-shadow:0 0 10px var(--teal)"></div>
-      <label>Soft Rain</label>
-      <div class="toggle" id="togRain"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.45" id="volRain"><span class="val" id="valRain">45%</span></div>
-    </div>
-    <div class="channel">
-      <div class="chip" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></div>
-      <label>Vinyl Crackle</label>
-      <div class="toggle" id="togCrackle"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.3" id="volCrackle"><span class="val" id="valCrackle">30%</span></div>
-    </div>
-    <div class="channel">
-      <div class="chip" style="background:var(--lavender);box-shadow:0 0 10px var(--lavender)"></div>
-      <label>Cosmic Chimes</label>
-      <div class="toggle" id="togChimes"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.35" id="volChimes"><span class="val" id="valChimes">35%</span></div>
-    </div>
-    <div class="master">
-      <div class="row"><label style="flex:none;font-size:11px">Master Volume</label><input type="range" min="0" max="1" step="0.01" value="0.75" id="volMaster"><span class="val" id="valMaster">75%</span></div>
+    <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
+    <div class="mixer-list">
+      <div class="mixer-item">
+        <div class="mixer-dot" id="dotHum" style="background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></div>
+        <div class="mixer-label">Deep Synth Hum</div>
+        <input type="range" min="0" max="1" step="0.01" value="0.45" class="mixer-slider" id="volHum">
+        <span class="mixer-val" id="valHum">45%</span>
+      </div>
+      <div class="mixer-item">
+        <div class="mixer-dot" id="dotRain" style="background:var(--teal);box-shadow:0 0 10px var(--teal)"></div>
+        <div class="mixer-label">Soft Rain</div>
+        <input type="range" min="0" max="1" step="0.01" value="0.4" class="mixer-slider" id="volRain">
+        <span class="mixer-val" id="valRain">40%</span>
+      </div>
+      <div class="mixer-item">
+        <div class="mixer-dot" id="dotCrackle" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></div>
+        <div class="mixer-label">Vinyl Crackle</div>
+        <input type="range" min="0" max="1" step="0.01" value="0.3" class="mixer-slider" id="volCrackle">
+        <span class="mixer-val" id="valCrackle">30%</span>
+      </div>
+      <div class="mixer-item">
+        <div class="mixer-dot" id="dotChimes" style="background:var(--lavender);box-shadow:0 0 10px var(--lavender)"></div>
+        <div class="mixer-label">Cosmic Chimes</div>
+        <input type="range" min="0" max="1" step="0.01" value="0.35" class="mixer-slider" id="volChimes">
+        <span class="mixer-val" id="valChimes">35%</span>
+      </div>
+      <div class="mixer-item" style="padding-top:6px">
+        <div class="mixer-label" style="font-size:11px;color:var(--muted)">Master Volume</div>
+        <input type="range" min="0" max="1" step="0.01" value="0.7" class="mixer-slider" id="volMaster">
+        <span class="mixer-val" id="valMaster">70%</span>
+      </div>
     </div>
   </div>
   <div class="focus-col">
     <div class="panel" id="panelPomodoro">
-      <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
-      <div class="timer">
+      <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
+      <div class="timer-wrap">
         <div class="time" id="timer">25:00</div>
         <div class="mode-chip" id="modeChip">Work</div>
       </div>
       <div class="timer-controls">
-        <button class="btn primary" id="timerStart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
-        <button class="btn" id="timerReset"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v16a2 2 0 0 0 2 2h16"></path><polyline points="8 4 4 8 8 12"></polyline><polyline points="16 20 20 16 16 12"></polyline></svg></button>
+        <button class="btn primary" id="timerStart">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </button>
+        <button class="btn" id="timerReset">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v16a2 2 0 0 0 2 2h16"></path><polyline points="8 4 4 8 8 12"></polyline><polyline points="16 20 20 16 16 12"></polyline></svg>
+        </button>
       </div>
       <div class="mode-row">
         <button class="btn" id="modeWork">Work</button>
         <button class="btn" id="modeBreak">Break</button>
       </div>
-      <div class="status" id="timerStatus"></div>
+      <div class="status dim" id="timerStatus"></div>
     </div>
     <div class="panel notes" id="panelNotes">
-      <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
-      <textarea id="notes" placeholder="Quick notes, ideas, or a to-do list…"></textarea>
-      <div class="status ok" id="notesStatus">Saved locally</div>
+      <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
+      <textarea id="notes" placeholder="Type notes…"></textarea>
+      <div class="notes-status" id="notesStatus">Saved locally</div>
     </div>
   </div>
 </div>
@@ -347,20 +339,19 @@ input[type=range]::-webkit-slider-thumb{
   const ctx = canvas.getContext('2d', { alpha: false });
   const $ = id => document.getElementById(id);
 
-  // ---------------- Audio engine ----------------
+  // ---------------- Audio engine (muffled, smooth, relaxing) ----------------
   let audioCtx = null;
   let masterGain = null;
   let analyser = null;
   let audioStarted = false;
   const channels = {};
-  const PENTATONIC = [220.00, 246.94, 293.66, 329.63, 392.00, 440.00, 523.25];
 
-  function startAudio() {
-    if (audioStarted) return;
+  function startAudio(){
+    if(audioStarted) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AC();
     masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.75;
+    masterGain.gain.value = 0.6;
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 4096;
     masterGain.connect(analyser);
@@ -372,353 +363,323 @@ input[type=range]::-webkit-slider-thumb{
     initChimes();
   }
 
-  function setChannel(name, on) {
+  function setChannel(name, on){
     const ch = channels[name];
-    if (!ch) return;
+    if(!ch) return;
     ch.on = on;
-    if (ch.gain) {
+    if(ch.gain){
       ch.gain.gain.cancelScheduledValues(0);
       ch.gain.gain.setValueAtTime(on ? ch.vol : 0, audioCtx.currentTime);
     }
+    const dot = $(`dot${name.charAt(0).toUpperCase() + name.slice(1)}`);
+    if(dot) dot.style.opacity = on ? '1' : '0.45';
   }
 
-  function setChannelVol(name, vol) {
+  function setChannelVol(name, vol){
     const ch = channels[name];
-    if (!ch) return;
+    if(!ch) return;
     ch.vol = Math.max(0, Math.min(1, vol));
-    if (ch.on && ch.gain) ch.gain.gain.value = ch.vol;
+    if(ch.on && ch.gain) ch.gain.gain.value = ch.vol;
   }
 
-  function setMaster(vol) {
-    if (masterGain) masterGain.gain.value = Math.max(0, Math.min(1, vol));
+  function setMaster(vol){
+    if(masterGain) masterGain.gain.value = Math.max(0, Math.min(1, vol));
   }
 
-  // --- Deep Synth Hum: low-pass filtered warmth ---
-  function initHum() {
+  // Deep Synth Hum: warm low-pass filtered sub-bass
+  function initHum(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 220; filter.Q.value = 0.8;
-    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 55;
-    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 55.4;
-    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 110;
-    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.05;
-    const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.9;
+    filter.type = 'lowpass'; filter.frequency.value = 140; filter.Q.value = 0.6;
+    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 44;
+    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 44.3;
+    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 88;
+    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.04;
+    const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.7;
     lfo.connect(lfoG); lfoG.connect(o1.detune);
-    [o1, o2, o3, lfo].forEach(o => o.start());
+    [o1,o2,o3,lfo].forEach(o=>o.start());
     o1.connect(filter); o2.connect(filter); o3.connect(filter);
     filter.connect(g);
-    channels.hum = { gain: g, on: false, vol: 0.5 };
+    channels.hum = { gain:g, on:false, vol:0.45 };
   }
 
-  // --- Soft Rain: pink noise with heavy low-pass ---
-  function initRain() {
+  // Soft Rain: muffled pink noise with heavy low-pass
+  function initRain(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 700; filter.Q.value = 1.2;
+    filter.type = 'lowpass'; filter.frequency.value = 500; filter.Q.value = 1.0;
     const buf = makePinkNoiseBuffer(audioCtx.sampleRate, 24);
     const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
     src.connect(filter); filter.connect(g);
     src.start();
-    channels.rain = { gain: g, on: false, vol: 0.45 };
+    channels.rain = { gain:g, on:false, vol:0.4 };
   }
 
-  // --- Vinyl Crackle: subtle hum + rare soft pops ---
-  function initCrackle() {
+  // Vinyl Crackle: subtle hum with rare soft pops
+  function initCrackle(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass'; filter.frequency.value = 1100; filter.Q.value = 2;
+    filter.type = 'lowpass'; filter.frequency.value = 900; filter.Q.value = 1.4;
     const buf = makeNoiseBuffer(audioCtx.sampleRate, 30, 'crackle');
     const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
     src.connect(filter); filter.connect(g);
     src.start();
-    channels.crackle = { gain: g, on: false, vol: 0.3 };
+    channels.crackle = { gain:g, on:false, vol:0.3 };
   }
 
-  // --- Cosmic Chimes: soft gentle soothing tones at long intervals with reverb ---
-  function initChimes() {
+  // Cosmic Chimes: soft gentle tones at long intervals with reverb
+  function initChimes(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const convolver = audioCtx.createConvolver();
-    convolver.buffer = makeReverbBuffer(audioCtx.sampleRate, 2.4);
+    convolver.buffer = makeReverbBuffer(audioCtx.sampleRate, 2.6);
     convolver.connect(g);
-    channels.chimes = { gain: g, on: false, vol: 0.35, convolver };
+    channels.chimes = { gain:g, on:false, vol:0.35, convolver };
     scheduleChime();
   }
 
-  function scheduleChime() {
-    setTimeout(() => {
-      if (!audioCtx || !channels.chimes.on) { scheduleChime(); return; }
+  function scheduleChime(){
+    setTimeout(()=>{
+      if(!audioCtx || !channels.chimes.on){ scheduleChime(); return; }
       const now = audioCtx.currentTime;
-      const freq = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)] * Math.pow(2, Math.floor(Math.random() * 2));
-      const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
+      const PENTATONIC = [220,246.94,293.66,329.63,392,440,523.25];
+      const freq = PENTATONIC[Math.floor(Math.random()*PENTATONIC.length)] * Math.pow(2, Math.floor(Math.random()*2));
+      const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value = freq;
       const env = audioCtx.createGain();
       env.gain.setValueAtTime(0, now);
-      env.gain.linearRampToValueAtTime(0.2, now + 0.08);
-      env.gain.exponentialRampToValueAtTime(0.0005, now + 3.2);
+      env.gain.linearRampToValueAtTime(0.16, now + 0.12);
+      env.gain.exponentialRampToValueAtTime(0.0005, now + 3.6);
       osc.connect(env); env.connect(channels.chimes.convolver);
-      osc.start(now); osc.stop(now + 3.4);
+      osc.start(now); osc.stop(now + 3.8);
       scheduleChime();
-    }, 4500 + Math.random() * 6000);
+    }, 5000 + Math.random()*7000);
   }
 
-  function makeReverbBuffer(sampleRate, duration) {
+  function makeReverbBuffer(sampleRate, duration){
     const len = sampleRate * duration;
     const buf = audioCtx.createBuffer(2, len, sampleRate);
-    for (let ch = 0; ch < 2; ch++) {
+    for(let ch=0;ch<2;ch++){
       const data = buf.getChannelData(ch);
-      for (let i = 0; i < len; i++) {
-        const t = i / sampleRate;
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 2.2);
+      for(let i=0;i<len;i++){
+        const t = i/sampleRate;
+        data[i] = (Math.random()*2-1) * Math.exp(-t * 2.4);
       }
     }
     return buf;
   }
 
-  function makePinkNoiseBuffer(sampleRate, duration) {
+  function makePinkNoiseBuffer(sampleRate, duration){
     const len = sampleRate * duration;
     const buf = audioCtx.createBuffer(1, len, sampleRate);
     const data = buf.getChannelData(0);
-    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-    for (let i = 0; i < len; i++) {
-      const white = Math.random() * 2 - 1;
-      b0 = 0.99886 * b0 + white * 0.0555179;
-      b1 = 0.99332 * b1 + white * 0.0750759;
-      b2 = 0.96900 * b2 + white * 0.1538520;
-      b3 = 0.86650 * b3 + white * 0.3104856;
-      b4 = 0.55000 * b4 + white * 0.5329522;
-      b5 = -0.7616 * b5 - white * 0.0168980;
-      b6 = white * 0.115926;
-      data[i] = white + b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-      data[i] *= 0.16;
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(let i=0;i<len;i++){
+      const white = Math.random()*2-1;
+      b0 = 0.99886*b0 + white*0.0555179;
+      b1 = 0.99332*b1 + white*0.0750759;
+      b2 = 0.96900*b2 + white*0.1538520;
+      b3 = 0.86650*b3 + white*0.3104856;
+      b4 = 0.55000*b4 + white*0.5329522;
+      b5 = -0.7616*b5 - white*0.0168980;
+      b6 = white*0.115926;
+      data[i] = white + b0 + b1 + b2 + b3 + b4 + b5 + b6 + white*0.5362;
+      data[i] *= 0.12;
     }
     return buf;
   }
 
-  function makeNoiseBuffer(sampleRate, duration, kind) {
+  function makeNoiseBuffer(sampleRate, duration, kind){
     const len = sampleRate * duration;
     const buf = audioCtx.createBuffer(1, len, sampleRate);
     const data = buf.getChannelData(0);
-    let brown = 0;
-    let nextPop = 1200 + Math.random() * 3000;
-    for (let i = 0; i < len; i++) {
-      const white = Math.random() * 2 - 1;
-      brown += white * 0.02;
+    let brown=0;
+    let nextPop = 1500 + Math.random()*3000;
+    for(let i=0;i<len;i++){
+      const white = Math.random()*2-1;
+      brown += white*0.015;
       brown *= 0.997;
-      let sample = brown * 0.9;
-      if (kind === 'crackle' && i >= nextPop) {
-        const amp = 0.2 + Math.random() * 0.25;
-        const span = 20 + Math.random() * 80;
-        for (let j = 0; j < span && i + j < len; j++) {
-          data[i + j] += amp * Math.exp(-j / 18) * (Math.random() * 2 - 1) * 0.35;
+      let sample = brown*0.7;
+      if(kind==='crackle' && i>=nextPop){
+        const amp = 0.12 + Math.random()*0.18;
+        const span = 18 + Math.random()*70;
+        for(let j=0;j<span && i+j<len;j++){
+          data[i+j] += amp * Math.exp(-j/20) * (Math.random()*2-1) * 0.3;
         }
-        nextPop += 2200 + Math.random() * 6000;
+        nextPop += 2600 + Math.random()*7000;
       }
       data[i] = sample;
     }
-    for (let i = 0; i < len; i++) {
-      let v = data[i]; v = v > 1 ? 1 : v < -1 ? -1 : v; data[i] = v;
+    for(let i=0;i<len;i++){
+      let v=data[i]; v = v>1?1:v<-1?-1:v; data[i]=v;
     }
     return buf;
   }
 
-  function playAlert() {
-    if (!audioCtx) return;
+  function playAlert(){
+    if(!audioCtx) return;
     const now = audioCtx.currentTime;
     const seq = [523.25, 659.25, 783.99, 1046.50];
-    seq.forEach((f, i) => {
-      const t = now + i * 0.14;
-      const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
+    seq.forEach((f,i)=>{
+      const t = now + i*0.15;
+      const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value=f;
       const g = audioCtx.createGain();
       g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.16, t + 0.06);
-      g.gain.exponentialRampToValueAtTime(0.0005, t + 0.5);
+      g.gain.linearRampToValueAtTime(0.14, t+0.07);
+      g.gain.exponentialRampToValueAtTime(0.0005, t+0.55);
       osc.connect(g); g.connect(masterGain);
-      osc.start(t); osc.stop(t + 0.55);
+      osc.start(t); osc.stop(t+0.6);
     });
   }
 
-  function getBassEnergy() {
-    if (!analyser) return 0;
+  function getBassEnergy(){
+    if(!analyser) return 0;
     const data = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(data);
-    let sum = 0;
+    let sum=0;
     const n = Math.min(64, data.length);
-    for (let i = 0; i < n; i++) sum += data[i];
-    return sum / n / 255;
+    for(let i=0;i<n;i++) sum += data[i];
+    return sum/n/255;
   }
 
-  // ---------------- Canvas / Aurora ----------------
-  let width = 0, height = 0, dpr = 1;
-  let pointer = { x: 0, y: 0, active: false };
-  let intensity = 0;
-  let targetIntensity = 0;
+  // ---------------- Canvas: single slow aurora wave ----------------
+  let width=0, height=0, dpr=1;
+  let pointer={x:0,y:0};
+  let intensity=0;
 
-  const cursorGlow = $('cursorGlow');
-
-  function resize() {
+  function resize(){
     width = innerWidth;
     height = innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    canvas.width = width*dpr;
+    canvas.height = height*dpr;
+    canvas.style.width = width+'px';
+    canvas.style.height = height+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
   window.addEventListener('resize', resize);
   resize();
 
-  function pointerMove(x, y) {
-    pointer.x = x; pointer.y = y; pointer.active = true;
-    targetIntensity = Math.min(1, targetIntensity + 0.12);
-    cursorGlow.style.left = (x - 90) + 'px';
-    cursorGlow.style.top = (y - 90) + 'px';
-    cursorGlow.style.width = '180px';
-    cursorGlow.style.height = '180px';
-    cursorGlow.style.background = 'radial-gradient(circle, rgba(0,243,255,0.14) 0%, rgba(112,0,255,0.06) 40%, rgba(0,255,170,0.03) 70%, transparent 100%)';
-    cursorGlow.style.opacity = '0.9';
-  }
-
-  window.addEventListener('mousemove', e => pointerMove(e.clientX, e.clientY));
-  window.addEventListener('touchmove', e => {
+  // Subtle pointer glow only (no trails/circles)
+  window.addEventListener('mousemove', e=>{
+    pointer.x = e.clientX; pointer.y = e.clientY;
+    intensity = Math.min(1, intensity + 0.15);
+  });
+  window.addEventListener('touchmove', e=>{
     const t = e.touches[0];
-    pointerMove(t.clientX, t.clientY);
-  }, { passive: false });
-  window.addEventListener('mousedown', e => pointerMove(e.clientX, e.clientY));
-  window.addEventListener('touchstart', e => {
-    const t = e.touches[0];
-    pointerMove(t.clientX, t.clientY);
-  }, { passive: false });
-  window.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
-  window.addEventListener('touchend', () => { cursorGlow.style.opacity = '0'; });
+    pointer.x = t.clientX; pointer.y = t.clientY;
+    intensity = Math.min(1, intensity + 0.15);
+  }, {passive:false});
 
   const layers = [
-    { baseY: 0.34, amp: 60, freq: 0.0014, spd: 0.00005, color: [0, 243, 255], noiseAmp: 8 },
-    { baseY: 0.50, amp: 75, freq: 0.0011, spd: -0.00004, color: [112, 0, 255], noiseAmp: 10 },
-    { baseY: 0.66, amp: 48, freq: 0.0017, spd: 0.00006, color: [0, 255, 170], noiseAmp: 6 },
-    { baseY: 0.44, amp: 42, freq: 0.0009, spd: 0.00003, color: [196, 181, 253], noiseAmp: 7 }
+    { baseY:0.42, amp:50, freq:0.0009, spd:0.00004, color:[0,243,255], noiseAmp:6 },
+    { baseY:0.52, amp:60, freq:0.0007, spd:-0.00003, color:[112,0,255], noiseAmp:7 },
+    { baseY:0.60, amp:42, freq:0.0011, spd:0.00005, color:[0,255,170], noiseAmp:5 },
   ];
 
-  function drawAurora(t) {
+  function drawAurora(t){
     const bass = getBassEnergy();
-    const sync = $('syncToggle').classList.contains('on');
-    const pulse = sync ? bass * 1.2 : 0;
-
-    const grad = ctx.createLinearGradient(0, 0, 0, height);
+    const grad = ctx.createLinearGradient(0,0,0,height);
     grad.addColorStop(0, '#05070a');
-    grad.addColorStop(1, '#0a0e16');
+    grad.addColorStop(1, '#0a0d15');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0,0,width,height);
 
-    intensity += (targetIntensity - intensity) * 0.03;
-    targetIntensity *= 0.99;
+    intensity += (0 - intensity) * 0.015;
 
-    for (const l of layers) {
+    for(const l of layers){
       const pts = [];
-      const steps = Math.ceil(width / 4);
-      for (let i = 0; i <= steps; i++) {
-        const x = (width / steps) * i;
-        let y = height * l.baseY;
-        y += Math.sin(x * l.freq + t * l.spd * 700) * l.amp;
-        y += Math.sin(x * l.freq * 2.3 + t * l.spd * 350) * l.amp * 0.35;
-        y += Math.sin(x * l.freq * 0.4 + t * 0.0008) * l.noiseAmp;
+      const steps = Math.ceil(width/5);
+      for(let i=0;i<=steps;i++){
+        const x = (width/steps)*i;
+        let y = height*l.baseY;
+        y += Math.sin(x*l.freq + t*l.spd*600) * l.amp;
+        y += Math.sin(x*l.freq*2.1 + t*l.spd*300) * l.amp*0.3;
+        y += Math.sin(x*l.freq*0.3 + t*0.0005) * l.noiseAmp;
         const dx = x - pointer.x;
-        const dy = height * l.baseY - pointer.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 420) y += Math.sin(t * 0.002 + i * 0.5) * (420 - dist) * 0.05 * intensity;
-        y += Math.sin(x * 0.0025 + t * 0.001) * pulse * 30;
-        pts.push([x, y]);
+        const dy = height*l.baseY - pointer.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 500){
+          y += Math.sin(t*0.001 + i) * (500-dist) * 0.02 * intensity;
+        }
+        pts.push([x,y]);
       }
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
       ctx.lineTo(width, height);
       ctx.lineTo(0, height);
       ctx.closePath();
-      const a = 0.08 + intensity * 0.1 + pulse * 0.1;
+      const a = 0.05 + intensity*0.06 + bass*0.04;
       ctx.fillStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${a})`;
       ctx.fill();
 
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.2 + intensity * 0.18 + pulse * 0.15})`;
-      ctx.lineWidth = 1.2;
-      ctx.shadowBlur = 14 + pulse * 18;
+      for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.12 + intensity*0.1 + bass*0.08})`;
+      ctx.lineWidth = 1.1;
+      ctx.shadowBlur = 10 + bass*20;
       ctx.shadowColor = `rgb(${l.color[0]},${l.color[1]},${l.color[2]})`;
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
-
-    if (sync && pulse > 0.12) {
-      const grad2 = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width * 0.5);
-      grad2.addColorStop(0, `rgba(0,243,255,${pulse * 0.08})`);
-      grad2.addColorStop(1, 'rgba(0,243,255,0)');
-      ctx.fillStyle = grad2;
-      ctx.fillRect(0, 0, width, height);
-    }
   }
 
   // ---------------- Pomodoro ----------------
-  let pomodoro = { work: 25 * 60, break: 5 * 60, left: 25 * 60, mode: 'work', running: false, last: 0 };
+  let pomodoro = { work:25*60, break:5*60, left:25*60, mode:'work', running:false, last:0 };
 
-  function fmt(s) {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+  function fmt(s){
+    const m = Math.floor(s/60);
+    const sec = s%60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
   }
-
-  function timerRender() {
+  function timerRender(){
     $('timer').textContent = fmt(pomodoro.left);
     $('modeChip').textContent = pomodoro.mode.charAt(0).toUpperCase() + pomodoro.mode.slice(1);
-    $('modeChip').style.color = pomodoro.mode === 'work' ? 'var(--cyan)' : 'var(--teal)';
+    $('modeChip').style.color = pomodoro.mode==='work' ? 'var(--cyan)' : 'var(--teal)';
   }
-
-  function timerSetMode(mode) {
+  function timerSetMode(mode){
     pomodoro.mode = mode;
-    pomodoro.left = mode === 'work' ? pomodoro.work : pomodoro.break;
+    pomodoro.left = mode==='work' ? pomodoro.work : pomodoro.break;
     pomodoro.running = false;
-    $('timerStart').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+    $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     $('timerStart').classList.remove('playing');
     timerRender();
     $('timerStatus').textContent = '';
   }
-
-  function timerStartStop() {
+  function timerStartStop(){
     startAudio();
     pomodoro.running = !pomodoro.running;
     pomodoro.last = performance.now();
     const btn = $('timerStart');
-    if (pomodoro.running) {
-      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+    if(pomodoro.running){
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
       btn.classList.add('playing');
     } else {
-      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
       btn.classList.remove('playing');
     }
   }
-
-  function timerReset() {
+  function timerReset(){
     pomodoro.running = false;
-    pomodoro.left = pomodoro.mode === 'work' ? pomodoro.work : pomodoro.break;
-    $('timerStart').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+    pomodoro.left = pomodoro.mode==='work' ? pomodoro.work : pomodoro.break;
+    $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     $('timerStart').classList.remove('playing');
     timerRender();
     $('timerStatus').textContent = '';
   }
-
-  function timerTick(now) {
-    if (!pomodoro.running) return;
-    const elapsed = (now - pomodoro.last) / 1000;
-    if (elapsed < 1) return;
+  function timerTick(now){
+    if(!pomodoro.running) return;
+    const elapsed = (now - pomodoro.last)/1000;
+    if(elapsed < 1) return;
     const steps = Math.floor(elapsed);
-    pomodoro.last += steps * 1000;
+    pomodoro.last += steps*1000;
     pomodoro.left -= steps;
-    if (pomodoro.left <= 0) {
+    if(pomodoro.left <= 0){
       pomodoro.left = 0;
       pomodoro.running = false;
       playAlert();
       $('timerStatus').textContent = 'Session complete';
-      $('timerStart').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+      $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
       $('timerStart').classList.remove('playing');
       timerRender();
       return;
@@ -728,8 +689,8 @@ input[type=range]::-webkit-slider-thumb{
 
   $('timerStart').addEventListener('click', timerStartStop);
   $('timerReset').addEventListener('click', timerReset);
-  $('modeWork').addEventListener('click', () => timerSetMode('work'));
-  $('modeBreak').addEventListener('click', () => timerSetMode('break'));
+  $('modeWork').addEventListener('click', ()=>timerSetMode('work'));
+  $('modeBreak').addEventListener('click', ()=>timerSetMode('break'));
   timerRender();
 
   // ---------------- Notes ----------------
@@ -737,38 +698,37 @@ input[type=range]::-webkit-slider-thumb{
   const notesStatus = $('notesStatus');
   let notesDebounce = null;
   notesEl.value = localStorage.getItem('aurora_notes') || '';
-  notesStatus.textContent = notesEl.value ? 'Loaded from storage' : 'Empty — start typing';
-  function saveNotes() {
+  notesStatus.textContent = notesEl.value ? 'Saved locally' : 'Empty';
+  function saveNotes(){
     localStorage.setItem('aurora_notes', notesEl.value);
     notesStatus.textContent = 'Saved';
-    notesStatus.className = 'status ok';
-    setTimeout(() => { notesStatus.textContent = ''; }, 1500);
+    setTimeout(()=>{ notesStatus.textContent = ''; }, 1500);
   }
-  notesEl.addEventListener('input', () => {
-    if (notesDebounce) clearTimeout(notesDebounce);
+  notesEl.addEventListener('input', ()=>{
+    if(notesDebounce) clearTimeout(notesDebounce);
     notesDebounce = setTimeout(saveNotes, 300);
   });
 
   // ---------------- Mixer wiring ----------------
   const mixerDefs = [
-    { name: 'hum', tog: 'togHum', vol: 'volHum', val: 'valHum' },
-    { name: 'rain', tog: 'togRain', vol: 'volRain', val: 'valRain' },
-    { name: 'crackle', tog: 'togCrackle', vol: 'volCrackle', val: 'valCrackle' },
-    { name: 'chimes', tog: 'togChimes', vol: 'volChimes', val: 'valChimes' }
+    { name:'hum', tog:'dotHum', vol:'volHum', val:'valHum' },
+    { name:'rain', tog:'dotRain', vol:'volRain', val:'valRain' },
+    { name:'crackle', tog:'dotCrackle', vol:'volCrackle', val:'valCrackle' },
+    { name:'chimes', tog:'dotChimes', vol:'volChimes', val:'valChimes' },
   ];
-  mixerDefs.forEach(d => {
+  mixerDefs.forEach(d=>{
     const togEl = $(d.tog);
     const volEl = $(d.vol);
     const valEl = $(d.val);
-    togEl.addEventListener('click', () => {
+    togEl.addEventListener('click', ()=>{
       startAudio();
       const on = !togEl.classList.contains('on');
       togEl.classList.toggle('on', on);
       setChannel(d.name, on);
     });
-    volEl.addEventListener('input', () => {
+    volEl.addEventListener('input', ()=>{
       const v = parseFloat(volEl.value);
-      valEl.textContent = Math.round(v * 100) + '%';
+      valEl.textContent = Math.round(v*100) + '%';
       setChannelVol(d.name, v);
     });
     volEl.dispatchEvent(new Event('input'));
@@ -776,36 +736,22 @@ input[type=range]::-webkit-slider-thumb{
 
   const masterEl = $('volMaster');
   const masterVal = $('valMaster');
-  masterEl.addEventListener('input', () => {
+  masterEl.addEventListener('input', ()=>{
     const v = parseFloat(masterEl.value);
-    masterVal.textContent = Math.round(v * 100) + '%';
+    masterVal.textContent = Math.round(v*100) + '%';
     setMaster(v);
   });
   masterEl.dispatchEvent(new Event('input'));
 
-  const syncEl = $('syncToggle');
-  syncEl.addEventListener('click', () => {
-    startAudio();
-    syncEl.classList.toggle('on');
-  });
-
-  // ---------------- Idle fade ----------------
-  let lastActivity = Date.now();
-  const fadeables = [$('panelMixer'), $('panelPomodoro'), $('panelNotes')];
-  function activity() { lastActivity = Date.now(); fadeables.forEach(el => el.classList.remove('faded')); }
-  ['mousemove', 'mousedown', 'touchstart', 'keydown', 'scroll'].forEach(ev => window.addEventListener(ev, activity, true));
-  setInterval(() => {
-    if (Date.now() - lastActivity > 4000) fadeables.forEach(el => el.classList.add('faded'));
-  }, 500);
-
-  window.addEventListener('pointerdown', startAudio, { once: true });
-  window.addEventListener('touchstart', startAudio, { once: true });
-  window.addEventListener('keydown', startAudio, { once: true });
+  // Audio resume on first interaction
+  window.addEventListener('pointerdown', startAudio, {once:true});
+  window.addEventListener('touchstart', startAudio, {once:true});
+  window.addEventListener('keydown', startAudio, {once:true});
 
   // ---------------- Render loop ----------------
   let lastT = 0;
-  function loop(t) {
-    const dt = Math.min(0.033, (t - lastT) / 1000);
+  function loop(t){
+    const dt = Math.min(0.033, (t-lastT)/1000);
     lastT = t;
     drawAurora(t);
     timerTick(t);
