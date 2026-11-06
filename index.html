@@ -6,23 +6,28 @@
 <title>Wave Runner — Aurora</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;background:#090a0f;color:#eaeaf0;font-family:'Inter',system-ui,sans-serif}
+  html,body{height:100%;overflow:hidden;background:#090b10;color:#eaeaf0;font-family:'Inter',system-ui,sans-serif}
   canvas{display:block}
   .hud{position:fixed;top:16px;left:50%;transform:translateX(-50%);text-align:center;z-index:5;pointer-events:none}
-  .hud .score{font-size:32px;font-weight:800;letter-spacing:-1px;text-shadow:0 0 20px rgba(91,108,255,.6)}
-  .hud .best{font-size:12px;opacity:.6;margin-top:2px}
-  .panel{position:fixed;top:16px;right:16px;z-index:6;background:rgba(12,14,24,.55);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px 16px;width:220px}
-  .panel h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin-bottom:8px}
-  .panel .row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-  .panel button{flex:1;min-width:60px;padding:8px 6px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#eaeaf0;font-size:12px;cursor:pointer;transition:.2s}
-  .panel button.active{background:linear-gradient(135deg,#5b6cff,#ff5b9a);border-color:transparent}
-  .panel button:hover:not(.active){background:rgba(255,255,255,.1)}
-  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:7;background:rgba(9,10,15,.55);backdrop-filter:blur(6px)}
-  .overlay h1{font-size:56px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#fff,#5b6cff 60%,#5bffcf);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hud .score{font-size:34px;font-weight:800;letter-spacing:-1px;text-shadow:0 0 24px rgba(0,243,255,.6)}
+  .hud .best{font-size:12px;opacity:.6;margin-top:2px;letter-spacing:1px}
+  .btn-gear{position:fixed;top:16px;right:16px;z-index:6;width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(12,14,24,.55);backdrop-filter:blur(14px);color:#eaeaf0;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .modal{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(9,11,16,.6);backdrop-filter:blur(8px)}
+  .modal.hidden{display:none}
+  .card{background:rgba(12,14,24,.75);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;width:min(420px,90vw)}
+  .card h2{font-size:18px;font-weight:700;margin-bottom:16px}
+  .card h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin:12px 0 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .card button{flex:1;min-width:90px;padding:10px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#eaeaf0;font-size:12px;cursor:pointer;transition:.2s}
+  .card button.active{background:linear-gradient(135deg,#00f3ff,#7000ff);border-color:transparent;color:#fff}
+  .card button:hover:not(.active){background:rgba(255,255,255,.1)}
+  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:7;background:rgba(9,11,16,.55);backdrop-filter:blur(6px)}
+  .overlay.hidden{display:none}
+  .overlay h1{font-size:60px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#fff,#00f3ff 50%,#00ffaa);-webkit-background-clip:text;background-clip:text;color:transparent}
   .overlay p{margin-top:12px;opacity:.7;font-size:16px}
-  .overlay .btn{margin-top:28px;padding:14px 40px;border-radius:999px;border:none;background:#fff;color:#0a0a0f;font-weight:700;font-size:15px;cursor:pointer}
-  .overlay .btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(91,108,255,.4)}
-  .hidden{display:none}
+  .overlay .btn{margin-top:28px;padding:14px 44px;border-radius:999px;border:none;background:#fff;color:#090b10;font-weight:700;font-size:15px;cursor:pointer}
+  .overlay .btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,243,255,.4)}
+  .close{margin-top:16px;padding:10px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#eaeaf0;cursor:pointer}
 </style>
 </head>
 <body>
@@ -31,25 +36,29 @@
   <div class="score" id="score">0</div>
   <div class="best" id="best">best 0</div>
 </div>
-<div class="panel">
-  <h3>Icon</h3>
-  <div class="row" id="icons">
-    <button data-v="tri" class="active">Triangle</button>
-    <button data-v="dia">Diamond</button>
-    <button data-v="dot">Dot</button>
-  </div>
-  <h3>Theme</h3>
-  <div class="row" id="themes">
-    <button data-v="aurora" class="active">Aurora</button>
-    <button data-v="violet">Violet</button>
-    <button data-v="solar">Solar</button>
-    <button data-v="polar">Polar</button>
-  </div>
-  <h3>Trail</h3>
-  <div class="row" id="trails">
-    <button data-v="solid" class="active">Solid</button>
-    <button data-v="particle">Particle</button>
-    <button data-v="fade">Fade</button>
+<button class="btn-gear" id="gear">⚙</button>
+<div class="modal hidden" id="modal">
+  <div class="card">
+    <h2>Customize</h2>
+    <h3>Shape</h3>
+    <div class="row" id="shapes">
+      <button data-v="arrow" class="active">Arrow</button>
+      <button data-v="diamond">Diamond</button>
+      <button data-v="sphere">Sphere</button>
+    </div>
+    <h3>Palette</h3>
+    <div class="row" id="palettes">
+      <button data-v="aurora" class="active">Aurora</button>
+      <button data-v="cyber">Cyber</button>
+      <button data-v="arctic">Arctic</button>
+    </div>
+    <h3>Trail</h3>
+    <div class="row" id="trails">
+      <button data-v="ribbon" class="active">Ribbon</button>
+      <button data-v="particles">Particles</button>
+      <button data-v="wireframe">Wireframe</button>
+    </div>
+    <button class="close" id="close">Close</button>
   </div>
 </div>
 <div class="overlay" id="start">
@@ -66,228 +75,205 @@
 (() => {
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
   function resize(){ canvas.width = innerWidth*dpr; canvas.height = innerHeight*dpr; canvas.style.width = innerWidth+'px'; canvas.style.height = innerHeight+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);}
   resize(); addEventListener('resize', resize);
 
-  const THEMES = {
-    aurora: { player:'#5bffcf', trail1:'#5b6cff', trail2:'#ff5b9a', wall:'#5b6cff', spike:'#ff5b9a', glow:'rgba(91,108,255,.35)' },
-    violet: { player:'#c084fc', trail1:'#a855f7', trail2:'#ec4899', wall:'#a855f7', spike:'#ec4899', glow:'rgba(168,85,247,.35)' },
-    solar:  { player:'#fbbf24', trail1:'#f59e0b', trail2:'#ef4444', wall:'#f59e0b', spike:'#ef4444', glow:'rgba(245,158,11,.35)' },
-    polar:  { player:'#e2e8f0', trail1:'#94a3b8', trail2:'#cbd5e1', wall:'#94a3b8', spike:'#cbd5e1', glow:'rgba(148,163,184,.35)' }
+  const PALETTES = {
+    aurora: { p:'#00f3ff', t1:'#00f3ff', t2:'#7000ff', t3:'#00ffaa', wall:'#00f3ff', hazard:'#7000ff', glow:'rgba(0,243,255,.35)' },
+    cyber:  { p:'#ff2d95', t1:'#ff2d95', t2:'#ffd700', t3:'#ff6ec7', wall:'#ff2d95', hazard:'#ffd700', glow:'rgba(255,45,149,.35)' },
+    arctic: { p:'#e2e8f0', t1:'#e2e8f0', t2:'#00ffaa', t3:'#94a3b8', wall:'#e2e8f0', hazard:'#00ffaa', glow:'rgba(226,232,240,.35)' }
   };
-  let theme = 'aurora', icon = 'tri', trail = 'solid';
-  let state = 'menu', score = 0, best = +localStorage.getItem('wr_best')||0, speed = 360, dist = 0;
-  let holding = false, player = {x:0,y:0,vy:0}, trailPts = [], particles = [];
-  let walls = [], spikes = []; // world-space x
-  let lastT = 0, spawnX = 0;
-  const W = () => innerWidth, H = () => innerHeight;
-  const GROUND_Y = () => H()*0.85, CEIL_Y = () => H()*0.15;
+  let palette='aurora', shape='arrow', trailType='ribbon';
+  let state='menu', score=0, best=+localStorage.getItem('wr_best')||0, speed=360, dist=0;
+  let holding=false, player={x:0,y:0,vy:0}, trailBuf=[], particles=[];
+  let walls=[], hazards=[], spawnX=0, lastT=0;
+  const W=()=>innerWidth, H=()=>innerHeight;
+  const CEIL=()=>H()*0.12, FLOOR=()=>H()*0.88;
+
+  // noise for smooth slopes
+  function noise(x){ return (Math.sin(x*0.0017)+Math.sin(x*0.0031+1.7)+Math.sin(x*0.0009+3.3))/3; }
 
   function reset(){
-    score = 0; dist = 0; speed = 360;
-    player.x = W()*0.22; player.y = H()*0.5; player.vy = 0;
-    trailPts = []; particles = []; walls = []; spikes = []; spawnX = player.x + 200;
-    holding = false;
-    document.getElementById('score').textContent = '0';
+    score=0; dist=0; speed=360;
+    player.x=W()*0.22; player.y=H()*0.5;
+    trailBuf=[]; particles=[]; walls=[]; hazards=[]; spawnX=player.x+100;
+    holding=false;
+    document.getElementById('score').textContent='0';
   }
 
-  // procedural generation: maintain walls ahead of player
+  function gapWidth(){ return Math.max(150, 260 - score*0.04); }
+
   function ensureWorld(){
-    const ahead = player.x + W()*1.5;
-    while (spawnX < ahead){
-      // corridor segment
-      const segW = 100 + Math.random()*60;
-      const baseTop = CEIL_Y() + 20 + Math.random()*40;
-      const baseBot = GROUND_Y() - 20 - Math.random()*40;
-      const slopeTop = (Math.random()-0.5)*0.9;
-      const slopeBot = (Math.random()-0.5)*0.9;
-      walls.push({x:spawnX, w:segW, top0:baseTop, slopeTop, bot0:baseBot, slopeBot});
-      // maybe spike
-      if (Math.random() < 0.6){
-        const sx = spawnX + segW*0.4;
-        const sy = baseBot - 18;
-        spikes.push({x:sx,y:sy,w:26,h:26,side:'bottom'});
+    const ahead=player.x+W()*1.6;
+    while(spawnX<ahead){
+      const segW=140+Math.random()*60;
+      const center = H()*0.5 + noise(spawnX)*H()*0.18;
+      const g = gapWidth();
+      const topBase = center - g/2;
+      const botBase = center + g/2;
+      const slopeTop = noise(spawnX+100)*0.6;
+      const slopeBot = noise(spawnX+200)*0.6;
+      walls.push({x:spawnX,w:segW,top0:topBase,slopeTop,bot0:botBase,slopeBot});
+      // hazard diamond in open path
+      if(Math.random()<0.45){
+        const hx=spawnX+segW*0.5;
+        const hy=center + (Math.random()-0.5)*g*0.4;
+        hazards.push({x:hx,y:hy,s:16});
       }
-      if (Math.random() < 0.5){
-        const sx = spawnX + segW*0.65;
-        const sy = baseTop + 18;
-        spikes.push({x:sx,y:sy,w:26,h:26,side:'top'});
-      }
-      if (Math.random() < 0.35){
-        spikes.push({x:spawnX+segW*0.5, y:(baseTop+baseBot)/2, w:20, h:20, side:'mid'});
-      }
-      spawnX += segW;
+      spawnX+=segW;
     }
-    // remove old
-    walls = walls.filter(w => w.x + w.w > player.x - 200);
-    spikes = spikes.filter(s => s.x + s.w > player.x - 200);
+    walls=walls.filter(w=>w.x+w.w>player.x-200);
+    hazards=hazards.filter(h=>h.x+h.s>player.x-200);
   }
 
-  function wallY(w, x, top){
-    const t = x - w.x;
+  function wallY(w,x,top){
+    const t=x-w.x;
     return top ? w.top0 + w.slopeTop*t : w.bot0 + w.slopeBot*t;
   }
+  function getTop(x){ for(const w of walls) if(x>=w.x && x<=w.x+w.w) return wallY(w,x,true); return CEIL(); }
+  function getBot(x){ for(const w of walls) if(x>=w.x && x<=w.x+w.w) return wallY(w,x,false); return FLOOR(); }
 
   function update(dt){
     if(state!=='play') return;
-    // input -> vy
-    const s = speed * dpr; // px/sec (screen px)
+    speed = 360 + Math.min(500, score*1.5);
     player.vy = holding ? -speed : speed;
     player.x += speed*dt;
     player.y += player.vy*dt;
     dist += speed*dt;
     score = Math.floor(dist/10);
     document.getElementById('score').textContent = score;
-    if(score>best){ best=score; localStorage.setItem('wr_best',best); document.getElementById('best').textContent='best '+best;}
-
-    // difficulty
-    speed = 360 + Math.min(400, score*1.2);
+    if(score>best){ best=score; localStorage.setItem('wr_best',best); document.getElementById('best').textContent='best '+best; }
 
     ensureWorld();
+    trailBuf.unshift({x:player.x,y:player.y,t:performance.now()});
+    if(trailBuf.length>60) trailBuf.pop();
 
-    // trail
-    trailPts.unshift({x:player.x, y:player.y});
-    if(trailPts.length>40) trailPts.pop();
-
-    // particles
-    if(trail==='particle' && Math.random()<0.6){
-      particles.push({x:player.x,y:player.y,vx:-speed*0.3,vy:(Math.random()-0.5)*40,life:1,r:2+Math.random()*2});
+    if(trailType==='particles' && Math.random()<0.7){
+      particles.push({x:player.x,y:player.y,vx:-speed*0.35,vy:(Math.random()-0.5)*50,life:1,r:1.5+Math.random()*2});
     }
-    particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*1.8;});
-    particles = particles.filter(p=>p.life>0);
+    particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*2;});
+    particles=particles.filter(p=>p.life>0);
 
-    // collision
-    // bounds
-    const top = getTop(player.x), bot = getBot(player.x);
-    if(player.y < top+12 || player.y > bot-12){ crash(); return; }
-    for(const s of spikes){
-      if(player.x+10 > s.x && player.x-10 < s.x+s.w && player.y+10 > s.y-s.h && player.y-10 < s.y+s.h){ crash(); return; }
+    const top=getTop(player.x), bot=getBot(player.x);
+    if(player.y < top+11 || player.y > bot-11){ crash(); return; }
+    for(const h of hazards){
+      const dx=Math.abs(player.x-h.x), dy=Math.abs(player.y-h.y);
+      if(dx<12 && dy<12){ crash(); return; }
     }
-  }
-
-  function getTop(x){
-    for(const w of walls){ if(x>=w.x && x<=w.x+w.w) return wallY(w,x,true); }
-    return CEIL_Y();
-  }
-  function getBot(x){
-    for(const w of walls){ if(x>=w.x && x<=w.x+w.w) return wallY(w,x,false); }
-    return GROUND_Y();
   }
 
   function crash(){
     state='over';
-    document.getElementById('finalscore').textContent = score;
+    document.getElementById('finalscore').textContent=score;
     document.getElementById('over').classList.remove('hidden');
   }
 
   function drawAurora(t){
-    const g = ctx.createLinearGradient(0,0,0,H());
-    g.addColorStop(0,'#090a0f'); g.addColorStop(1,'#121826');
-    ctx.fillStyle = g; ctx.fillRect(0,0,W(),H());
-    // aurora waves
-    const layers = [
-      {color:'rgba(91,108,255,0.18)', amp:60, freq:0.003, speed:0.0003, y:0.35},
-      {color:'rgba(255,91,154,0.14)', amp:80, freq:0.0025, speed:-0.0002, y:0.5},
-      {color:'rgba(91,255,207,0.12)', amp:50, freq:0.004, speed:0.0004, y:0.65},
-      {color:'rgba(168,85,247,0.12)', amp:70, freq:0.002, speed:-0.00025, y:0.45}
+    const g=ctx.createLinearGradient(0,0,0,H());
+    g.addColorStop(0,'#090b10'); g.addColorStop(1,'#121826');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W(),H());
+    const layers=[
+      {c:'rgba(0,243,255,0.16)',amp:70,freq:0.0028,spd:0.00035,y:0.32},
+      {c:'rgba(112,0,255,0.14)',amp:90,freq:0.0022,spd:-0.00025,y:0.5},
+      {c:'rgba(0,255,170,0.12)',amp:60,freq:0.0035,spd:0.00045,y:0.68}
     ];
     layers.forEach(l=>{
-      ctx.beginPath();
-      ctx.moveTo(0,H()*l.y);
-      for(let x=0;x<=W();x+=4){
-        const y = H()*l.y + Math.sin(x*l.freq + t*l.speed*1000)*l.amp + Math.sin(x*l.freq*2.3 + t*l.speed*500)*l.amp*0.4;
+      ctx.beginPath(); ctx.moveTo(0,H()*l.y);
+      for(let x=0;x<=W();x+=3){
+        const y=H()*l.y+Math.sin(x*l.freq+t*l.spd*1000)*l.amp+Math.sin(x*l.freq*2.1+t*l.spd*500)*l.amp*0.4;
         ctx.lineTo(x,y);
       }
       ctx.lineTo(W(),H()); ctx.lineTo(0,H()); ctx.closePath();
-      ctx.fillStyle = l.color; ctx.fill();
-      // glow line
+      ctx.fillStyle=l.c; ctx.fill();
       ctx.beginPath();
-      for(let x=0;x<=W();x+=4){
-        const y = H()*l.y + Math.sin(x*l.freq + t*l.speed*1000)*l.amp + Math.sin(x*l.freq*2.3 + t*l.speed*500)*l.amp*0.4;
-        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      for(let x=0;x<=W();x+=3){
+        const y=H()*l.y+Math.sin(x*l.freq+t*l.spd*1000)*l.amp+Math.sin(x*l.freq*2.1+t*l.spd*500)*l.amp*0.4;
+        if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
       }
-      ctx.strokeStyle = l.color.replace(/[\d.]+\)$/,'0.5)'); ctx.lineWidth=2; ctx.shadowBlur=20; ctx.shadowColor=l.color; ctx.stroke(); ctx.shadowBlur=0;
+      ctx.strokeStyle=l.c.replace(/[\d.]+\)$/,'0.55)'); ctx.lineWidth=1.5; ctx.shadowBlur=18; ctx.shadowColor=l.c; ctx.stroke(); ctx.shadowBlur=0;
     });
   }
 
   function draw(dt,t){
+    const pal=PALETTES[palette];
     drawAurora(t);
-    const th = THEMES[theme];
-    const camX = player.x - W()*0.22;
+    const camX=player.x-W()*0.22;
     // walls
     for(const w of walls){
-      const x0 = w.x - camX;
-      // top wall
-      ctx.beginPath();
-      ctx.moveTo(x0,0);
-      for(let i=0;i<=w.w;i+=4){ ctx.lineTo(x0+i, wallY(w,w.x+i,true)); }
+      const x0=w.x-camX;
+      ctx.beginPath(); ctx.moveTo(x0,0);
+      for(let i=0;i<=w.w;i+=4) ctx.lineTo(x0+i,wallY(w,w.x+i,true));
       ctx.lineTo(x0+w.w,0); ctx.closePath();
-      ctx.fillStyle = 'rgba(15,18,32,0.85)'; ctx.fill();
-      // top edge glow
+      ctx.fillStyle='rgba(12,14,24,0.9)'; ctx.fill();
       ctx.beginPath();
-      for(let i=0;i<=w.w;i+=4){ const y=wallY(w,w.x+i,true); if(i===0) ctx.moveTo(x0+i,y); else ctx.lineTo(x0+i,y);}
-      ctx.strokeStyle = th.wall; ctx.lineWidth=2; ctx.shadowBlur=12; ctx.shadowColor=th.wall; ctx.stroke(); ctx.shadowBlur=0;
-      // bottom wall
-      ctx.beginPath();
-      ctx.moveTo(x0,H());
-      for(let i=0;i<=w.w;i+=4){ ctx.lineTo(x0+i, wallY(w,w.x+i,false)); }
+      for(let i=0;i<=w.w;i+=4){const y=wallY(w,w.x+i,true); if(i===0)ctx.moveTo(x0+i,y);else ctx.lineTo(x0+i,y);}
+      ctx.strokeStyle=pal.wall; ctx.lineWidth=2; ctx.shadowBlur=14; ctx.shadowColor=pal.wall; ctx.stroke(); ctx.shadowBlur=0;
+      ctx.beginPath(); ctx.moveTo(x0,H());
+      for(let i=0;i<=w.w;i+=4) ctx.lineTo(x0+i,wallY(w,w.x+i,false));
       ctx.lineTo(x0+w.w,H()); ctx.closePath();
-      ctx.fillStyle='rgba(15,18,32,0.85)'; ctx.fill();
+      ctx.fillStyle='rgba(12,14,24,0.9)'; ctx.fill();
       ctx.beginPath();
-      for(let i=0;i<=w.w;i+=4){ const y=wallY(w,w.x+i,false); if(i===0) ctx.moveTo(x0+i,y); else ctx.lineTo(x0+i,y);}
-      ctx.strokeStyle = th.wall; ctx.lineWidth=2; ctx.shadowBlur=12; ctx.shadowColor=th.wall; ctx.stroke(); ctx.shadowBlur=0;
+      for(let i=0;i<=w.w;i+=4){const y=wallY(w,w.x+i,false); if(i===0)ctx.moveTo(x0+i,y);else ctx.lineTo(x0+i,y);}
+      ctx.strokeStyle=pal.wall; ctx.lineWidth=2; ctx.shadowBlur=14; ctx.shadowColor=pal.wall; ctx.stroke(); ctx.shadowBlur=0;
     }
-    // spikes
-    for(const s of spikes){
-      const sx = s.x - camX;
-      ctx.save();
-      ctx.shadowBlur=14; ctx.shadowColor=th.spike;
-      ctx.fillStyle = th.spike;
+    // hazards
+    for(const h of hazards){
+      const hx=h.x-camX;
+      ctx.save(); ctx.shadowBlur=18; ctx.shadowColor=pal.hazard;
+      ctx.strokeStyle=pal.hazard; ctx.lineWidth=2; ctx.fillStyle='rgba(112,0,255,0.15)';
       ctx.beginPath();
-      if(s.side==='bottom'){
-        ctx.moveTo(sx, s.y); ctx.lineTo(sx+s.w/2, s.y-s.h); ctx.lineTo(sx+s.w, s.y);
-      } else if(s.side==='top'){
-        ctx.moveTo(sx, s.y); ctx.lineTo(sx+s.w/2, s.y+s.h); ctx.lineTo(sx+s.w, s.y);
-      } else {
-        ctx.moveTo(sx+s.w/2, s.y-s.h); ctx.lineTo(sx+s.w, s.y); ctx.lineTo(sx+s.w/2, s.y+s.h); ctx.lineTo(sx, s.y);
-      }
-      ctx.closePath(); ctx.fill();
-      ctx.restore();
+      ctx.moveTo(hx,h.y-h.s); ctx.lineTo(hx+h.s,h.y); ctx.lineTo(hx,h.y+h.s); ctx.lineTo(hx-h.s,h.y); ctx.closePath();
+      ctx.fill(); ctx.stroke(); ctx.restore();
     }
     // trail
-    const px = player.x - camX, py = player.y;
-    if(trail==='solid' || trail==='fade'){
+    const px=player.x-camX, py=player.y;
+    if(trailType==='ribbon'){
       ctx.save();
-      for(let i=0;i<trailPts.length-1;i++){
-        const a = trailPts[i], b = trailPts[i+1];
-        const alpha = trail==='fade' ? (1 - i/trailPts.length) : 0.7;
-        const g = ctx.createLinearGradient(a.x-camX, a.y, b.x-camX, b.y);
-        g.addColorStop(0, hexA(th.trail1, alpha));
-        g.addColorStop(1, hexA(th.trail2, alpha*0.6));
-        ctx.strokeStyle = g; ctx.lineWidth = 3; ctx.shadowBlur=8; ctx.shadowColor=th.trail1;
+      for(let i=0;i<trailBuf.length-1;i++){
+        const a=trailBuf[i], b=trailBuf[i+1];
+        const alpha=0.85*(1-i/trailBuf.length);
+        const g=ctx.createLinearGradient(a.x-camX,a.y,b.x-camX,b.y);
+        g.addColorStop(0,hexA(pal.t1,alpha)); g.addColorStop(1,hexA(pal.t2,alpha*0.5));
+        ctx.strokeStyle=g; ctx.lineWidth=3; ctx.shadowBlur=10; ctx.shadowColor=pal.t1;
         ctx.beginPath(); ctx.moveTo(a.x-camX,a.y); ctx.lineTo(b.x-camX,b.y); ctx.stroke();
       }
       ctx.restore();
-    }
-    // particles
-    for(const p of particles){
-      ctx.save(); ctx.globalAlpha = p.life;
-      ctx.fillStyle = th.trail2; ctx.shadowBlur=6; ctx.shadowColor=th.trail2;
-      ctx.beginPath(); ctx.arc(p.x-camX, p.y, p.r,0,Math.PI*2); ctx.fill();
+    } else if(trailType==='particles'){
+      for(const p of particles){
+        ctx.save(); ctx.globalAlpha=p.life;
+        ctx.fillStyle=pal.t2; ctx.shadowBlur=6; ctx.shadowColor=pal.t2;
+        ctx.beginPath(); ctx.arc(p.x-camX,p.y,p.r,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+      }
+    } else {
+      ctx.save();
+      ctx.strokeStyle=pal.t1; ctx.lineWidth=1.5; ctx.shadowBlur=8; ctx.shadowColor=pal.t1;
+      ctx.beginPath();
+      for(let i=0;i<trailBuf.length;i++){
+        const p=trailBuf[i];
+        if(i===0) ctx.moveTo(p.x-camX,p.y); else ctx.lineTo(p.x-camX,p.y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle=pal.t3; ctx.lineWidth=1; ctx.shadowBlur=6; ctx.shadowColor=pal.t3;
+      ctx.beginPath();
+      for(let i=0;i<trailBuf.length;i++){
+        const p=trailBuf[i];
+        if(i===0) ctx.moveTo(p.x-camX,p.y+6); else ctx.lineTo(p.x-camX,p.y+6);
+      }
+      ctx.stroke();
       ctx.restore();
     }
     // player
-    ctx.save();
-    ctx.shadowBlur=20; ctx.shadowColor=th.player;
-    ctx.fillStyle = th.player;
+    ctx.save(); ctx.shadowBlur=22; ctx.shadowColor=pal.p; ctx.fillStyle=pal.p;
     ctx.translate(px,py);
-    if(icon==='tri'){
+    if(shape==='arrow'){
       ctx.beginPath(); ctx.moveTo(14,0); ctx.lineTo(-10,-10); ctx.lineTo(-10,10); ctx.closePath(); ctx.fill();
-    } else if(icon==='dia'){
-      ctx.beginPath(); ctx.moveTo(0,-12); ctx.lineTo(12,0); ctx.lineTo(0,12); ctx.lineTo(-12,0); ctx.closePath(); ctx.fill();
+    } else if(shape==='diamond'){
+      ctx.beginPath(); ctx.moveTo(0,-13); ctx.lineTo(13,0); ctx.lineTo(0,13); ctx.lineTo(-13,0); ctx.closePath(); ctx.fill();
     } else {
-      ctx.beginPath(); ctx.arc(0,0,10,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(0,0,11,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=2; ctx.stroke();
     }
     ctx.restore();
   }
@@ -299,44 +285,48 @@
 
   let raf;
   function loop(t){
-    const dt = Math.min(0.033, (t-lastT)/1000); lastT = t;
-    update(dt);
-    draw(dt,t);
-    raf = requestAnimationFrame(loop);
+    const dt=Math.min(0.033,(t-lastT)/1000); lastT=t;
+    update(dt); draw(dt,t);
+    raf=requestAnimationFrame(loop);
   }
 
   function startPlay(){
     document.getElementById('start').classList.add('hidden');
     document.getElementById('over').classList.add('hidden');
-    reset();
-    state='play';
-    lastT = performance.now();
+    document.getElementById('modal').classList.add('hidden');
+    reset(); state='play'; lastT=performance.now();
   }
-  document.getElementById('play').onclick = startPlay;
-  document.getElementById('retry').onclick = startPlay;
+  document.getElementById('play').onclick=startPlay;
+  document.getElementById('retry').onclick=startPlay;
 
-  // input
   function down(){ if(state==='play') holding=true; }
   function up(){ if(state==='play') holding=false; }
   addEventListener('mousedown', down);
   addEventListener('mouseup', up);
   addEventListener('touchstart', e=>{e.preventDefault();down();},{passive:false});
   addEventListener('touchend', e=>{e.preventDefault();up();},{passive:false});
-  addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); down(); } if(state!=='play' && e.code==='Space') startPlay();});
+  addEventListener('keydown', e=>{
+    if(e.code==='Space'){ e.preventDefault(); down(); }
+    if(state!=='play' && e.code==='Space') startPlay();
+  });
   addEventListener('keyup', e=>{ if(e.code==='Space') up(); });
 
-  // panel
-  function wire(id, setter){
+  document.getElementById('gear').onclick=()=>document.getElementById('modal').classList.remove('hidden');
+  document.getElementById('close').onclick=()=>document.getElementById('modal').classList.add('hidden');
+
+  function wire(id,setter){
     document.getElementById(id).querySelectorAll('button').forEach(b=>{
-      b.onclick = ()=>{ document.getElementById(id).querySelectorAll('button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); setter(b.dataset.v); };
+      b.onclick=()=>{
+        document.getElementById(id).querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active'); setter(b.dataset.v);
+      };
     });
   }
-  wire('icons', v=>icon=v);
-  wire('themes', v=>theme=v);
-  wire('trails', v=>trail=v);
+  wire('shapes', v=>shape=v);
+  wire('palettes', v=>palette=v);
+  wire('trails', v=>trailType=v);
 
-  // init best
-  document.getElementById('best').textContent = 'best '+best;
+  document.getElementById('best').textContent='best '+best;
   requestAnimationFrame(loop);
 })();
 </script>
