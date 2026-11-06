@@ -7,14 +7,14 @@
 <style>
 :root{
   --bg:#080a0f;
-  --panel:rgba(16,20,36,0.55);
-  --panel-border:1px solid rgba(255,255,255,0.08);
+  --panel:rgba(15,18,28,0.6);
+  --panel-border:1px solid rgba(255,255,255,0.06);
   --cyan:#00f3ff;
   --violet:#7000ff;
   --teal:#00ffaa;
   --lavender:#c4b5fd;
   --text:#e8eaf2;
-  --muted:rgba(232,234,242,0.55);
+  --muted:rgba(232,234,242,0.5);
   --shadow:0 24px 60px rgba(0,0,0,0.5);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -40,112 +40,114 @@ header{
   top:0;
   left:0;
   right:0;
-  height:64px;
+  height:56px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
+  padding:0 24px;
   z-index:50;
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   border-bottom:var(--panel-border);
-  background:rgba(8,10,15,0.6);
+  background:rgba(8,10,15,0.55);
 }
 .app-title{
-  font-size:17px;
+  font-size:15px;
   font-weight:700;
-  letter-spacing:2px;
+  letter-spacing:1.5px;
   text-transform:uppercase;
   color:var(--cyan);
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
 }
 .title-dot{
-  width:7px;
-  height:7px;
+  width:6px;
+  height:6px;
   border-radius:50%;
   background:var(--cyan);
-  box-shadow:0 0 14px var(--cyan);
-  animation:pulse 2.5s infinite;
+  box-shadow:0 0 12px var(--cyan);
+  animation:pulse 3s infinite;
 }
 @keyframes pulse{
   0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:0.55;transform:scale(1.15)}
+  50%{opacity:0.5;transform:scale(1.15)}
 }
-.header-right{display:flex;align-items:center;gap:18px}
-.sync-label{font-size:12px;color:var(--muted);letter-spacing:0.4px;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:14px}
+.sync-label{font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
 .workspace{
   position:relative;
   z-index:20;
-  padding:84px 28px 40px;
-  max-width:1200px;
+  padding:76px 24px 40px;
+  max-width:1100px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:360px 1fr;
-  gap:24px;
+  grid-template-columns:340px 1fr;
+  gap:20px;
   align-items:start;
 }
 @media (max-width:900px){
-  .workspace{grid-template-columns:1fr;padding-top:104px}
+  .workspace{grid-template-columns:1fr;padding-top:96px}
 }
 .panel{
   background:var(--panel);
   border:var(--panel-border);
-  border-radius:20px;
-  padding:24px;
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  border-radius:24px;
+  padding:28px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   box-shadow:var(--shadow);
   opacity:1;
   pointer-events:auto;
-  transition:opacity 0.7s ease,pointer-events 0.7s ease;
+  transition:opacity 0.8s ease,pointer-events 0.8s ease;
 }
 .panel.faded{opacity:0;pointer-events:none}
 .panel h2{
-  font-size:13px;
+  font-size:12px;
   text-transform:uppercase;
-  letter-spacing:1.6px;
+  letter-spacing:2px;
   color:var(--muted);
-  margin-bottom:18px;
+  margin-bottom:22px;
   display:flex;
   align-items:center;
   gap:8px;
+  font-weight:600;
 }
-.panel h2 svg{width:14px;height:14px;color:var(--cyan)}
+.panel h2 svg{width:13px;height:13px;color:var(--cyan);opacity:0.8}
 .channel{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  gap:11px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.03);
 }
 .channel:last-child{border-bottom:none}
 .channel .chip{
-  width:10px;
-  height:10px;
+  width:9px;
+  height:9px;
   border-radius:50%;
   box-shadow:0 0 10px currentColor;
 }
-.channel label{flex:1;font-size:13px;color:var(--text)}
+.channel label{flex:1;font-size:12.5px;color:var(--text);font-weight:500}
 .channel .toggle{
   position:relative;
-  width:44px;
-  height:24px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.18);
-  background:rgba(255,255,255,0.06);
+  width:42px;
+  height:22px;
+  border-radius:11px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.04);
   cursor:pointer;
+  flex-shrink:0;
 }
 .toggle-thumb{
   position:absolute;
   top:2px;
   left:2px;
-  width:20px;
-  height:20px;
+  width:18px;
+  height:18px;
   border-radius:50%;
   background:#fff;
-  transition:transform 0.2s ease;
+  transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 .toggle.on{
   border-color:transparent;
@@ -156,33 +158,33 @@ header{
   flex:1;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
 }
 input[type=range]{
   -webkit-appearance:none;
-  height:4px;
-  background:rgba(255,255,255,0.08);
+  height:3px;
+  background:rgba(255,255,255,0.06);
   border-radius:2px;
   outline:none;
   width:100%;
 }
 input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;
-  width:14px;
-  height:14px;
+  width:12px;
+  height:12px;
   border-radius:50%;
   background:#fff;
   cursor:pointer;
-  box-shadow:0 0 10px rgba(255,255,255,0.45);
+  box-shadow:0 0 8px rgba(255,255,255,0.35);
 }
-.val{font-size:11px;color:var(--muted);min-width:32px;text-align:right;font-variant-numeric:tabular-nums}
+.val{font-size:10px;color:var(--muted);min-width:30px;text-align:right;font-variant-numeric:tabular-nums}
 .master{
-  margin-top:24px;
-  padding-top:16px;
-  border-top:1px solid rgba(255,255,255,0.06);
+  margin-top:26px;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,0.05);
 }
-.master .row{display:flex;align-items:center;gap:10px;margin-top:8px}
-.focus-col{display:flex;flex-direction:column;gap:16px}
+.master .row{display:flex;align-items:center;gap:9px;margin-top:8px}
+.focus-col{display:flex;flex-direction:column;gap:18px}
 .timer{
   display:flex;
   flex-direction:column;
@@ -190,21 +192,22 @@ input[type=range]::-webkit-slider-thumb{
   gap:10px;
 }
 .time{
-  font-size:60px;
+  font-size:52px;
   font-weight:800;
-  letter-spacing:-3px;
+  letter-spacing:-2px;
   font-variant-numeric:tabular-nums;
-  text-shadow:0 0 30px rgba(0,243,255,0.4);
+  color:#fff;
 }
 .mode-chip{
-  font-size:11px;
+  font-size:10px;
   text-transform:uppercase;
-  letter-spacing:1.4px;
-  padding:5px 12px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.05);
+  letter-spacing:1.6px;
+  padding:6px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.04);
   color:var(--cyan);
+  font-weight:600;
 }
 .timer-controls{
   display:flex;
@@ -214,57 +217,68 @@ input[type=range]::-webkit-slider-thumb{
 .mode-row{display:flex;gap:8px}
 .btn{
   border:none;
-  border-radius:10px;
-  padding:9px 16px;
-  font-size:13px;
+  border-radius:12px;
+  padding:10px 16px;
+  font-size:12px;
   font-weight:600;
   cursor:pointer;
-  transition:all 0.2s;
-  background:rgba(255,255,255,0.07);
-  border:1px solid rgba(255,255,255,0.1);
+  transition:all 0.2s ease;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
   color:var(--text);
   flex:1;
 }
-.btn:hover{background:rgba(255,255,255,0.14)}
+.btn:hover{background:rgba(255,255,255,0.1)}
 .btn.primary{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   color:#fff;
   border-color:transparent;
-  box-shadow:0 0 20px rgba(0,243,255,0.35);
+  box-shadow:0 0 18px rgba(0,243,255,0.3);
 }
+.btn.secondary{background:transparent}
 .notes textarea{
   width:100%;
-  height:230px;
+  height:210px;
   background:transparent;
   border:none;
   color:var(--text);
   font-family:inherit;
-  font-size:14px;
-  line-height:1.75;
+  font-size:13px;
+  line-height:1.8;
   resize:none;
   outline:none;
   opacity:0.95;
   touch-action:auto;
 }
-.notes textarea::placeholder{color:rgba(232,234,242,0.35)}
+.notes textarea::placeholder{color:rgba(232,234,242,0.3)}
 .status{
-  font-size:12px;
+  font-size:11px;
   color:var(--muted);
-  margin-top:6px;
-  min-height:16px;
+  margin-top:8px;
+  min-height:14px;
 }
 .status.ok{color:var(--teal)}
+.cursor-glow{
+  position:fixed;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:45;
+  mix-blend-mode:screen;
+  transition:left 0.15s ease,top 0.15s ease,width 0.5s ease,height 0.5s ease,opacity 0.6s ease;
+  opacity:0;
+}
 </style>
 </head>
 <body>
 <canvas id="aurora"></canvas>
+<div class="cursor-glow" id="cursorGlow"></div>
 <header>
   <div class="app-title">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 3 11.21a9 9 0 0 0 9 7.58h0a7 7 0 0 0 7-6z"></path><path d="M12 7v5l4 3"></path></svg>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 3 11.21a9 9 0 0 0 9 7.58h0a7 7 0 0 0 7-6z"></path><path d="M12 7v5l4 3"></path></svg>
     AuraPad
   </div>
   <div class="header-right">
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px">
       <span class="sync-label">Audio-Visual Sync</span>
       <div class="toggle" id="syncToggle"><div class="toggle-thumb"></div></div>
     </div>
@@ -272,38 +286,38 @@ input[type=range]::-webkit-slider-thumb{
 </header>
 <div class="workspace" id="workspace">
   <div class="panel" id="panelMixer">
-    <h2><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
+    <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
     <div class="channel">
-      <div class="chip" style="background:var(--cyan);box-shadow:0 0 12px var(--cyan)"></div>
+      <div class="chip" style="background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></div>
       <label>Deep Synth Hum</label>
       <div class="toggle" id="togHum"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.45" id="volHum"><span class="val" id="valHum">45%</span></div>
+      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.5" id="volHum"><span class="val" id="valHum">50%</span></div>
     </div>
     <div class="channel">
-      <div class="chip" style="background:var(--violet);box-shadow:0 0 12px var(--violet)"></div>
-      <label>Vinyl Crackle</label>
-      <div class="toggle" id="togCrackle"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.35" id="volCrackle"><span class="val" id="valCrackle">35%</span></div>
-    </div>
-    <div class="channel">
-      <div class="chip" style="background:var(--teal);box-shadow:0 0 12px var(--teal)"></div>
+      <div class="chip" style="background:var(--teal);box-shadow:0 0 10px var(--teal)"></div>
       <label>Soft Rain</label>
       <div class="toggle" id="togRain"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.4" id="volRain"><span class="val" id="valRain">40%</span></div>
+      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.45" id="volRain"><span class="val" id="valRain">45%</span></div>
     </div>
     <div class="channel">
-      <div class="chip" style="background:var(--lavender);box-shadow:0 0 12px var(--lavender)"></div>
+      <div class="chip" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></div>
+      <label>Vinyl Crackle</label>
+      <div class="toggle" id="togCrackle"><div class="toggle-thumb"></div></div>
+      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.3" id="volCrackle"><span class="val" id="valCrackle">30%</span></div>
+    </div>
+    <div class="channel">
+      <div class="chip" style="background:var(--lavender);box-shadow:0 0 10px var(--lavender)"></div>
       <label>Cosmic Chimes</label>
       <div class="toggle" id="togChimes"><div class="toggle-thumb"></div></div>
-      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.3" id="volChimes"><span class="val" id="valChimes">30%</span></div>
+      <div class="slider-wrap"><input type="range" min="0" max="1" step="0.01" value="0.35" id="volChimes"><span class="val" id="valChimes">35%</span></div>
     </div>
     <div class="master">
-      <div class="row"><label style="flex:none;font-size:12px">Master Volume</label><input type="range" min="0" max="1" step="0.01" value="0.7" id="volMaster"><span class="val" id="valMaster">70%</span></div>
+      <div class="row"><label style="flex:none;font-size:11px">Master Volume</label><input type="range" min="0" max="1" step="0.01" value="0.75" id="volMaster"><span class="val" id="valMaster">75%</span></div>
     </div>
   </div>
   <div class="focus-col">
     <div class="panel" id="panelPomodoro">
-      <h2><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
+      <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
       <div class="timer">
         <div class="time" id="timer">25:00</div>
         <div class="mode-chip" id="modeChip">Work</div>
@@ -319,7 +333,7 @@ input[type=range]::-webkit-slider-thumb{
       <div class="status" id="timerStatus"></div>
     </div>
     <div class="panel notes" id="panelNotes">
-      <h2><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
+      <h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
       <textarea id="notes" placeholder="Quick notes, ideas, or a to-do list…"></textarea>
       <div class="status ok" id="notesStatus">Saved locally</div>
     </div>
@@ -339,22 +353,22 @@ input[type=range]::-webkit-slider-thumb{
   let analyser = null;
   let audioStarted = false;
   const channels = {};
-  const PENTATONIC = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 659.25];
+  const PENTATONIC = [220.00, 246.94, 293.66, 329.63, 392.00, 440.00, 523.25];
 
   function startAudio() {
     if (audioStarted) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AC();
     masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.7;
+    masterGain.gain.value = 0.75;
     analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
+    analyser.fftSize = 4096;
     masterGain.connect(analyser);
     analyser.connect(audioCtx.destination);
     audioStarted = true;
     initHum();
-    initCrackle();
     initRain();
+    initCrackle();
     initChimes();
   }
 
@@ -379,53 +393,54 @@ input[type=range]::-webkit-slider-thumb{
     if (masterGain) masterGain.gain.value = Math.max(0, Math.min(1, vol));
   }
 
-  // --- Deep Synth Hum ---
+  // --- Deep Synth Hum: low-pass filtered warmth ---
   function initHum() {
-    const g = audioCtx.createGain();
-    g.gain.value = 0;
-    g.connect(masterGain);
-    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 110;
-    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 110.6;
-    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 220;
-    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.06;
-    const lfoG = audioCtx.createGain(); lfoG.gain.value = 1.2;
-    lfo.connect(lfoG); lfoG.connect(o1.detune);
-    const trem = audioCtx.createOscillator(); trem.frequency.value = 1.7;
-    const tremG = audioCtx.createGain(); tremG.gain.value = 0.05;
-    trem.connect(tremG); tremG.connect(g.gain);
-    [o1, o2, o3, lfo, trem].forEach(o => o.start());
-    channels.hum = { gain: g, on: false, vol: 0.45 };
-    o1.connect(g); o2.connect(g); o3.connect(g);
-  }
-
-  // --- Vinyl Crackle (looped brown noise + pops, bandpassed) ---
-  function initCrackle() {
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
-    const filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 900; filter.Q.value = 2.6;
-    const buf = makeNoiseBuffer(audioCtx.sampleRate, 24, 'brown');
-    const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
-    src.connect(filter); filter.connect(g);
-    src.start();
-    channels.crackle = { gain: g, on: false, vol: 0.35 };
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 220; filter.Q.value = 0.8;
+    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 55;
+    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 55.4;
+    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 110;
+    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.05;
+    const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.9;
+    lfo.connect(lfoG); lfoG.connect(o1.detune);
+    [o1, o2, o3, lfo].forEach(o => o.start());
+    o1.connect(filter); o2.connect(filter); o3.connect(filter);
+    filter.connect(g);
+    channels.hum = { gain: g, on: false, vol: 0.5 };
   }
 
-  // --- Soft Rain (looped pink noise + droplets, bandpassed) ---
+  // --- Soft Rain: pink noise with heavy low-pass ---
   function initRain() {
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
-    const filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 1400; filter.Q.value = 1.6;
-    const buf = makeNoiseBuffer(audioCtx.sampleRate, 30, 'rain');
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 700; filter.Q.value = 1.2;
+    const buf = makePinkNoiseBuffer(audioCtx.sampleRate, 24);
     const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
     src.connect(filter); filter.connect(g);
     src.start();
-    channels.rain = { gain: g, on: false, vol: 0.4 };
+    channels.rain = { gain: g, on: false, vol: 0.45 };
   }
 
-  // --- Cosmic Chimes ---
+  // --- Vinyl Crackle: subtle hum + rare soft pops ---
+  function initCrackle() {
+    const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass'; filter.frequency.value = 1100; filter.Q.value = 2;
+    const buf = makeNoiseBuffer(audioCtx.sampleRate, 30, 'crackle');
+    const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
+    src.connect(filter); filter.connect(g);
+    src.start();
+    channels.crackle = { gain: g, on: false, vol: 0.3 };
+  }
+
+  // --- Cosmic Chimes: soft gentle soothing tones at long intervals with reverb ---
   function initChimes() {
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
-    const filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.Q.value = 3;
-    filter.connect(g);
-    channels.chimes = { gain: g, on: false, vol: 0.3, filter };
+    const convolver = audioCtx.createConvolver();
+    convolver.buffer = makeReverbBuffer(audioCtx.sampleRate, 2.4);
+    convolver.connect(g);
+    channels.chimes = { gain: g, on: false, vol: 0.35, convolver };
     scheduleChime();
   }
 
@@ -433,18 +448,49 @@ input[type=range]::-webkit-slider-thumb{
     setTimeout(() => {
       if (!audioCtx || !channels.chimes.on) { scheduleChime(); return; }
       const now = audioCtx.currentTime;
-      const freq = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)] * Math.pow(2, Math.floor(Math.random() * 3));
+      const freq = PENTATONIC[Math.floor(Math.random() * PENTATONIC.length)] * Math.pow(2, Math.floor(Math.random() * 2));
       const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
       const env = audioCtx.createGain();
       env.gain.setValueAtTime(0, now);
-      env.gain.linearRampToValueAtTime(0.35, now + 0.03);
-      env.gain.exponentialRampToValueAtTime(0.0005, now + 2.4);
-      osc.connect(env); env.connect(channels.chimes.filter);
-      osc.start(now); osc.stop(now + 2.5);
-      channels.chimes.filter.frequency.setValueAtTime(400 + Math.random() * 2600, now);
-      channels.chimes.filter.frequency.exponentialRampToValueAtTime(900 + Math.random() * 3000, now + 1.6);
+      env.gain.linearRampToValueAtTime(0.2, now + 0.08);
+      env.gain.exponentialRampToValueAtTime(0.0005, now + 3.2);
+      osc.connect(env); env.connect(channels.chimes.convolver);
+      osc.start(now); osc.stop(now + 3.4);
       scheduleChime();
-    }, 1400 + Math.random() * 2600);
+    }, 4500 + Math.random() * 6000);
+  }
+
+  function makeReverbBuffer(sampleRate, duration) {
+    const len = sampleRate * duration;
+    const buf = audioCtx.createBuffer(2, len, sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++) {
+        const t = i / sampleRate;
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 2.2);
+      }
+    }
+    return buf;
+  }
+
+  function makePinkNoiseBuffer(sampleRate, duration) {
+    const len = sampleRate * duration;
+    const buf = audioCtx.createBuffer(1, len, sampleRate);
+    const data = buf.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < len; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      b6 = white * 0.115926;
+      data[i] = white + b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+      data[i] *= 0.16;
+    }
+    return buf;
   }
 
   function makeNoiseBuffer(sampleRate, duration, kind) {
@@ -452,49 +498,24 @@ input[type=range]::-webkit-slider-thumb{
     const buf = audioCtx.createBuffer(1, len, sampleRate);
     const data = buf.getChannelData(0);
     let brown = 0;
-    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-    let nextPop = 800 + Math.random() * 2400;
-    let nextDrop = 1500 + Math.random() * 3000;
+    let nextPop = 1200 + Math.random() * 3000;
     for (let i = 0; i < len; i++) {
       const white = Math.random() * 2 - 1;
-      let sample = 0;
-      if (kind === 'brown') {
-        brown += white * 0.03;
-        brown *= 0.996;
-        sample = brown * 1.4;
-      } else {
-        b0 = 0.99886 * b0 + white * 0.0555179;
-        b1 = 0.99332 * b1 + white * 0.0750759;
-        b2 = 0.96900 * b2 + white * 0.1538520;
-        b3 = 0.86650 * b3 + white * 0.3104856;
-        b4 = 0.55000 * b4 + white * 0.5329522;
-        b5 = -0.7616 * b5 - white * 0.0168980;
-        b6 = white * 0.115926;
-        sample = white + b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-        sample *= 0.28;
-      }
-      if (kind === 'brown' && i >= nextPop) {
-        const amp = 0.35 + Math.random() * 0.5;
-        const span = 30 + Math.random() * 120;
+      brown += white * 0.02;
+      brown *= 0.997;
+      let sample = brown * 0.9;
+      if (kind === 'crackle' && i >= nextPop) {
+        const amp = 0.2 + Math.random() * 0.25;
+        const span = 20 + Math.random() * 80;
         for (let j = 0; j < span && i + j < len; j++) {
-          data[i + j] += amp * Math.exp(-j / 22) * (Math.random() * 2 - 1) * 0.5;
+          data[i + j] += amp * Math.exp(-j / 18) * (Math.random() * 2 - 1) * 0.35;
         }
-        nextPop += 1800 + Math.random() * 5000;
-      }
-      if (kind === 'rain' && i >= nextDrop) {
-        const amp = 0.12 + Math.random() * 0.18;
-        const span = 200 + Math.random() * 400;
-        for (let j = 0; j < span && i + j < len; j++) {
-          data[i + j] += amp * Math.exp(-j / 90) * Math.sin(j * 0.08) * 0.4;
-        }
-        nextDrop += 2500 + Math.random() * 6000;
+        nextPop += 2200 + Math.random() * 6000;
       }
       data[i] = sample;
     }
     for (let i = 0; i < len; i++) {
-      let v = data[i];
-      v = v > 1 ? 1 : v < -1 ? -1 : v;
-      data[i] = v;
+      let v = data[i]; v = v > 1 ? 1 : v < -1 ? -1 : v; data[i] = v;
     }
     return buf;
   }
@@ -504,14 +525,14 @@ input[type=range]::-webkit-slider-thumb{
     const now = audioCtx.currentTime;
     const seq = [523.25, 659.25, 783.99, 1046.50];
     seq.forEach((f, i) => {
-      const t = now + i * 0.13;
+      const t = now + i * 0.14;
       const osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
       const g = audioCtx.createGain();
       g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.18, t + 0.05);
-      g.gain.exponentialRampToValueAtTime(0.0005, t + 0.42);
+      g.gain.linearRampToValueAtTime(0.16, t + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.0005, t + 0.5);
       osc.connect(g); g.connect(masterGain);
-      osc.start(t); osc.stop(t + 0.5);
+      osc.start(t); osc.stop(t + 0.55);
     });
   }
 
@@ -520,17 +541,18 @@ input[type=range]::-webkit-slider-thumb{
     const data = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(data);
     let sum = 0;
-    const n = Math.min(48, data.length);
+    const n = Math.min(64, data.length);
     for (let i = 0; i < n; i++) sum += data[i];
     return sum / n / 255;
   }
 
   // ---------------- Canvas / Aurora ----------------
   let width = 0, height = 0, dpr = 1;
-  let ripples = [];
-  let pointer = { x: 0, y: 0 };
+  let pointer = { x: 0, y: 0, active: false };
   let intensity = 0;
   let targetIntensity = 0;
+
+  const cursorGlow = $('cursorGlow');
 
   function resize() {
     width = innerWidth;
@@ -545,44 +567,41 @@ input[type=range]::-webkit-slider-thumb{
   window.addEventListener('resize', resize);
   resize();
 
-  function addRipple(x, y) {
-    ripples.push({
-      x: x, y: y,
-      r: 0, maxR: Math.min(width, height) * 0.85,
-      life: 1, born: performance.now()
-    });
-  }
-
   function pointerMove(x, y) {
-    pointer.x = x; pointer.y = y;
-    targetIntensity = Math.min(1, targetIntensity + 0.25);
-    addRipple(x, y);
+    pointer.x = x; pointer.y = y; pointer.active = true;
+    targetIntensity = Math.min(1, targetIntensity + 0.12);
+    cursorGlow.style.left = (x - 90) + 'px';
+    cursorGlow.style.top = (y - 90) + 'px';
+    cursorGlow.style.width = '180px';
+    cursorGlow.style.height = '180px';
+    cursorGlow.style.background = 'radial-gradient(circle, rgba(0,243,255,0.14) 0%, rgba(112,0,255,0.06) 40%, rgba(0,255,170,0.03) 70%, transparent 100%)';
+    cursorGlow.style.opacity = '0.9';
   }
 
   window.addEventListener('mousemove', e => pointerMove(e.clientX, e.clientY));
   window.addEventListener('touchmove', e => {
-    e.preventDefault();
     const t = e.touches[0];
     pointerMove(t.clientX, t.clientY);
   }, { passive: false });
   window.addEventListener('mousedown', e => pointerMove(e.clientX, e.clientY));
   window.addEventListener('touchstart', e => {
-    e.preventDefault();
     const t = e.touches[0];
     pointerMove(t.clientX, t.clientY);
   }, { passive: false });
+  window.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
+  window.addEventListener('touchend', () => { cursorGlow.style.opacity = '0'; });
 
   const layers = [
-    { baseY: 0.30, amp: 80, freq: 0.0026, spd: 0.00014, color: [0, 243, 255], noiseAmp: 14 },
-    { baseY: 0.48, amp: 100, freq: 0.0021, spd: -0.00011, color: [112, 0, 255], noiseAmp: 18 },
-    { baseY: 0.66, amp: 65, freq: 0.0034, spd: 0.00017, color: [0, 255, 170], noiseAmp: 10 },
-    { baseY: 0.52, amp: 55, freq: 0.0017, spd: 0.00009, color: [196, 181, 253], noiseAmp: 12 }
+    { baseY: 0.34, amp: 60, freq: 0.0014, spd: 0.00005, color: [0, 243, 255], noiseAmp: 8 },
+    { baseY: 0.50, amp: 75, freq: 0.0011, spd: -0.00004, color: [112, 0, 255], noiseAmp: 10 },
+    { baseY: 0.66, amp: 48, freq: 0.0017, spd: 0.00006, color: [0, 255, 170], noiseAmp: 6 },
+    { baseY: 0.44, amp: 42, freq: 0.0009, spd: 0.00003, color: [196, 181, 253], noiseAmp: 7 }
   ];
 
   function drawAurora(t) {
     const bass = getBassEnergy();
     const sync = $('syncToggle').classList.contains('on');
-    const pulse = sync ? bass * 1.6 : 0;
+    const pulse = sync ? bass * 1.2 : 0;
 
     const grad = ctx.createLinearGradient(0, 0, 0, height);
     grad.addColorStop(0, '#05070a');
@@ -590,23 +609,23 @@ input[type=range]::-webkit-slider-thumb{
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
-    intensity += (targetIntensity - intensity) * 0.04;
-    targetIntensity *= 0.985;
+    intensity += (targetIntensity - intensity) * 0.03;
+    targetIntensity *= 0.99;
 
     for (const l of layers) {
       const pts = [];
-      const steps = Math.ceil(width / 3);
+      const steps = Math.ceil(width / 4);
       for (let i = 0; i <= steps; i++) {
         const x = (width / steps) * i;
         let y = height * l.baseY;
-        y += Math.sin(x * l.freq + t * l.spd * 1000) * l.amp;
-        y += Math.sin(x * l.freq * 2.1 + t * l.spd * 600) * l.amp * 0.45;
-        y += Math.sin(x * l.freq * 0.5 + t * 0.0015) * l.noiseAmp;
+        y += Math.sin(x * l.freq + t * l.spd * 700) * l.amp;
+        y += Math.sin(x * l.freq * 2.3 + t * l.spd * 350) * l.amp * 0.35;
+        y += Math.sin(x * l.freq * 0.4 + t * 0.0008) * l.noiseAmp;
         const dx = x - pointer.x;
         const dy = height * l.baseY - pointer.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 320) y += Math.sin(t * 0.005 + i) * (320 - dist) * 0.18 * intensity * 1.2;
-        y += Math.sin(x * 0.004 + t * 0.002) * pulse * 60;
+        if (dist < 420) y += Math.sin(t * 0.002 + i * 0.5) * (420 - dist) * 0.05 * intensity;
+        y += Math.sin(x * 0.0025 + t * 0.001) * pulse * 30;
         pts.push([x, y]);
       }
       ctx.beginPath();
@@ -615,42 +634,24 @@ input[type=range]::-webkit-slider-thumb{
       ctx.lineTo(width, height);
       ctx.lineTo(0, height);
       ctx.closePath();
-      const a = 0.10 + intensity * 0.14 + pulse * 0.12;
+      const a = 0.08 + intensity * 0.1 + pulse * 0.1;
       ctx.fillStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${a})`;
       ctx.fill();
 
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
       for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.35 + intensity * 0.3 + pulse * 0.25})`;
-      ctx.lineWidth = 1.6;
-      ctx.shadowBlur = 20 + pulse * 30;
+      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.2 + intensity * 0.18 + pulse * 0.15})`;
+      ctx.lineWidth = 1.2;
+      ctx.shadowBlur = 14 + pulse * 18;
       ctx.shadowColor = `rgb(${l.color[0]},${l.color[1]},${l.color[2]})`;
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
 
-    for (let i = ripples.length - 1; i >= 0; i--) {
-      const rp = ripples[i];
-      const age = (t - rp.born) / 900;
-      rp.r += 260 / 60;
-      rp.life = 1 - age;
-      if (rp.life <= 0) { ripples.splice(i, 1); continue; }
-      const c = layers[Math.floor(Math.random() * layers.length)].color;
-      const alpha = rp.life * 0.45 * (1 + intensity);
-      ctx.beginPath();
-      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${alpha})`;
-      ctx.lineWidth = 2.2;
-      ctx.shadowBlur = 14 * rp.life;
-      ctx.shadowColor = `rgb(${c[0]},${c[1]},${c[2]})`;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-    }
-
-    if (sync && pulse > 0.15) {
-      const grad2 = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width * 0.6);
-      grad2.addColorStop(0, `rgba(0,243,255,${pulse * 0.12})`);
+    if (sync && pulse > 0.12) {
+      const grad2 = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width * 0.5);
+      grad2.addColorStop(0, `rgba(0,243,255,${pulse * 0.08})`);
       grad2.addColorStop(1, 'rgba(0,243,255,0)');
       ctx.fillStyle = grad2;
       ctx.fillRect(0, 0, width, height);
@@ -716,7 +717,7 @@ input[type=range]::-webkit-slider-thumb{
       pomodoro.left = 0;
       pomodoro.running = false;
       playAlert();
-      $('timerStatus').textContent = 'Session complete — take a breath';
+      $('timerStatus').textContent = 'Session complete';
       $('timerStart').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
       $('timerStart').classList.remove('playing');
       timerRender();
@@ -751,8 +752,8 @@ input[type=range]::-webkit-slider-thumb{
   // ---------------- Mixer wiring ----------------
   const mixerDefs = [
     { name: 'hum', tog: 'togHum', vol: 'volHum', val: 'valHum' },
-    { name: 'crackle', tog: 'togCrackle', vol: 'volCrackle', val: 'valCrackle' },
     { name: 'rain', tog: 'togRain', vol: 'volRain', val: 'valRain' },
+    { name: 'crackle', tog: 'togCrackle', vol: 'volCrackle', val: 'valCrackle' },
     { name: 'chimes', tog: 'togChimes', vol: 'volChimes', val: 'valChimes' }
   ];
   mixerDefs.forEach(d => {
