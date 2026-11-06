@@ -7,7 +7,7 @@
 <style>
 :root{
   --bg:#07090e;
-  --panel:rgba(20,24,36,0.45);
+  --panel:rgba(20,24,36,0.5);
   --panel-border:1px solid rgba(255,255,255,0.04);
   --cyan:#00f3ff;
   --violet:#7000ff;
@@ -17,11 +17,7 @@
   --muted:rgba(242,244,248,0.45);
   --shadow:0 30px 80px rgba(0,0,0,0.55);
 }
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 html,body{
   height:100%;
   background:var(--bg);
@@ -39,112 +35,106 @@ html,body{
   z-index:0;
   touch-action:none;
 }
-.cursor-none{
-  cursor:none;
-}
 header{
   position:fixed;
   top:0;
   left:0;
   right:0;
-  height:52px;
+  height:48px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
-  z-index:60;
+  padding:0 32px;
+  z-index:50;
   backdrop-filter:blur(24px);
   -webkit-backdrop-filter:blur(24px);
   border-bottom:var(--panel-border);
-  background:rgba(7,9,14,0.55);
+  background:rgba(7,9,14,0.4);
 }
 .app-title{
-  font-size:14px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:600;
   letter-spacing:2px;
   text-transform:uppercase;
   color:var(--cyan);
-  opacity:0.9;
+  opacity:0.7;
 }
 .workspace{
   position:relative;
   z-index:20;
-  padding:72px 48px 60px;
+  padding:64px 48px 60px;
   max-width:1100px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:360px 1fr;
-  gap:32px;
+  grid-template-columns:340px 1fr;
+  gap:40px;
   align-items:start;
 }
 @media (max-width:900px){
   .workspace{
     grid-template-columns:1fr;
-    padding-top:92px;
+    padding-top:88px;
     padding-left:24px;
     padding-right:24px;
+    gap:32px;
   }
 }
 .panel{
   background:var(--panel);
   border:var(--panel-border);
-  border-radius:28px;
-  padding:32px;
+  border-radius:32px;
+  padding:40px;
   backdrop-filter:blur(26px);
   -webkit-backdrop-filter:blur(26px);
   box-shadow:var(--shadow);
-  opacity:1;
-  pointer-events:auto;
-  transition:opacity 0.8s ease;
 }
-.panel.faded{opacity:0;pointer-events:none}
 .panel h2{
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:2.5px;
+  letter-spacing:3px;
   color:var(--muted);
-  margin-bottom:26px;
+  margin-bottom:30px;
   display:flex;
   align-items:center;
-  gap:9px;
+  gap:10px;
 }
 .panel h2 svg{
-  width:13px;
-  height:13px;
+  width:12px;
+  height:12px;
   color:var(--cyan);
-  opacity:0.7;
+  opacity:0.6;
 }
 
 /* ---------- Sound Mixer ---------- */
 .mixer-list{
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:20px;
 }
 .mixer-item{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
 .mixer-dot{
-  width:8px;
-  height:8px;
+  width:7px;
+  height:7px;
   border-radius:50%;
   box-shadow:0 0 10px currentColor;
-  opacity:0.55;
+  opacity:0.5;
   flex-shrink:0;
 }
 .mixer-label{
   flex:1;
-  font-size:12.5px;
+  font-size:12px;
   font-weight:500;
   color:var(--text);
-  opacity:0.9;
+  opacity:0.85;
 }
 .mixer-slider{
-  width:110px;
-  height:3px;
+  width:100px;
+  height:2px;
   background:rgba(255,255,255,0.05);
   border-radius:2px;
   outline:none;
@@ -157,12 +147,12 @@ header{
   border-radius:50%;
   background:#fff;
   cursor:pointer;
-  box-shadow:0 0 8px rgba(255,255,255,0.35);
+  box-shadow:0 0 8px rgba(255,255,255,0.3);
 }
 .mixer-val{
   font-size:10px;
   color:var(--muted);
-  min-width:32px;
+  min-width:30px;
   text-align:right;
   font-variant-numeric:tabular-nums;
 }
@@ -172,75 +162,73 @@ header{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
 .time{
-  font-size:72px;
-  font-weight:400;
-  letter-spacing:-4px;
+  font-size:80px;
+  font-weight:300;
+  letter-spacing:-6px;
   font-variant-numeric:tabular-nums;
   color:#fff;
   line-height:1;
 }
 .mode-chip{
-  font-size:11px;
+  font-size:10px;
   font-weight:600;
   text-transform:uppercase;
-  letter-spacing:1.8px;
-  padding:7px 16px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.08);
-  background:rgba(255,255,255,0.03);
+  letter-spacing:2px;
+  padding:8px 18px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.07);
+  background:rgba(255,255,255,0.02);
   color:var(--cyan);
 }
 .timer-controls{
   display:flex;
   gap:10px;
-  margin-top:4px;
+  margin-top:6px;
 }
 .mode-row{
   display:flex;
   gap:8px;
-  margin-top:8px;
+  margin-top:10px;
 }
 .btn{
   border:none;
-  border-radius:10px;
-  padding:9px 16px;
-  font-size:12px;
+  border-radius:12px;
+  padding:10px 18px;
+  font-size:11px;
   font-weight:600;
   cursor:pointer;
   transition:all 0.2s ease;
   background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.07);
   color:var(--text);
   flex:1;
 }
 .btn:hover{
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.09);
 }
 .btn.primary{
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   color:#fff;
   border-color:transparent;
-  box-shadow:0 0 16px rgba(0,243,255,0.3);
+  box-shadow:0 0 14px rgba(0,243,255,0.25);
 }
 .btn.secondary{
   background:transparent;
 }
 .status{
-  font-size:10.5px;
+  font-size:10px;
   color:var(--muted);
-  margin-top:10px;
-  min-height:13px;
+  margin-top:12px;
+  min-height:12px;
 }
-.status.ok{color:var(--teal)}
-.status.dim{color:var(--muted);}
 
 /* ---------- Scratchpad ---------- */
 .notes textarea{
   width:100%;
-  height:200px;
+  height:180px;
   background:transparent;
   border:none;
   color:var(--text);
@@ -249,17 +237,17 @@ header{
   line-height:1.9;
   resize:none;
   outline:none;
-  opacity:0.95;
+  opacity:0.9;
   touch-action:auto;
 }
 .notes textarea::placeholder{
-  color:rgba(242,244,248,0.28);
+  color:rgba(242,244,248,0.25);
 }
 .notes-status{
-  font-size:10.5px;
+  font-size:10px;
   color:var(--muted);
-  margin-top:10px;
-  min-height:13px;
+  margin-top:12px;
+  min-height:12px;
 }
 </style>
 </head>
@@ -270,7 +258,7 @@ header{
 </header>
 <div class="workspace" id="workspace">
   <div class="panel" id="panelMixer">
-    <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
+    <h2><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Sound Mixer</h2>
     <div class="mixer-list">
       <div class="mixer-item">
         <div class="mixer-dot" id="dotHum" style="background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></div>
@@ -296,8 +284,8 @@ header{
         <input type="range" min="0" max="1" step="0.01" value="0.35" class="mixer-slider" id="volChimes">
         <span class="mixer-val" id="valChimes">35%</span>
       </div>
-      <div class="mixer-item" style="padding-top:6px">
-        <div class="mixer-label" style="font-size:11px;color:var(--muted)">Master Volume</div>
+      <div class="mixer-item" style="padding-top:10px">
+        <div class="mixer-label" style="font-size:10px;color:var(--muted)">Master Volume</div>
         <input type="range" min="0" max="1" step="0.01" value="0.7" class="mixer-slider" id="volMaster">
         <span class="mixer-val" id="valMaster">70%</span>
       </div>
@@ -305,27 +293,27 @@ header{
   </div>
   <div class="focus-col">
     <div class="panel" id="panelPomodoro">
-      <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
+      <h2><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Pomodoro</h2>
       <div class="timer-wrap">
         <div class="time" id="timer">25:00</div>
         <div class="mode-chip" id="modeChip">Work</div>
       </div>
       <div class="timer-controls">
         <button class="btn primary" id="timerStart">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </button>
         <button class="btn" id="timerReset">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v16a2 2 0 0 0 2 2h16"></path><polyline points="8 4 4 8 8 12"></polyline><polyline points="16 20 20 16 16 12"></polyline></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v16a2 2 0 0 0 2 2h16"></path><polyline points="8 4 4 8 8 12"></polyline><polyline points="16 20 20 16 16 12"></polyline></svg>
         </button>
       </div>
       <div class="mode-row">
         <button class="btn" id="modeWork">Work</button>
         <button class="btn" id="modeBreak">Break</button>
       </div>
-      <div class="status dim" id="timerStatus"></div>
+      <div class="status" id="timerStatus"></div>
     </div>
     <div class="panel notes" id="panelNotes">
-      <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
+      <h2><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Scratchpad</h2>
       <textarea id="notes" placeholder="Type notes…"></textarea>
       <div class="notes-status" id="notesStatus">Saved locally</div>
     </div>
@@ -351,7 +339,7 @@ header{
     const AC = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AC();
     masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.6;
+    masterGain.gain.value = 0.5;
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 4096;
     masterGain.connect(analyser);
@@ -372,7 +360,7 @@ header{
       ch.gain.gain.setValueAtTime(on ? ch.vol : 0, audioCtx.currentTime);
     }
     const dot = $(`dot${name.charAt(0).toUpperCase() + name.slice(1)}`);
-    if(dot) dot.style.opacity = on ? '1' : '0.45';
+    if(dot) dot.style.opacity = on ? '1' : '0.35';
   }
 
   function setChannelVol(name, vol){
@@ -390,12 +378,12 @@ header{
   function initHum(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 140; filter.Q.value = 0.6;
-    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 44;
-    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 44.3;
-    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 88;
-    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.04;
-    const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.7;
+    filter.type = 'lowpass'; filter.frequency.value = 120; filter.Q.value = 0.5;
+    const o1 = audioCtx.createOscillator(); o1.type = 'sine'; o1.frequency.value = 41.2;
+    const o2 = audioCtx.createOscillator(); o2.type = 'sine'; o2.frequency.value = 41.4;
+    const o3 = audioCtx.createOscillator(); o3.type = 'sine'; o3.frequency.value = 82.4;
+    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.03;
+    const lfoG = audioCtx.createGain(); lfoG.gain.value = 0.5;
     lfo.connect(lfoG); lfoG.connect(o1.detune);
     [o1,o2,o3,lfo].forEach(o=>o.start());
     o1.connect(filter); o2.connect(filter); o3.connect(filter);
@@ -407,7 +395,7 @@ header{
   function initRain(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 500; filter.Q.value = 1.0;
+    filter.type = 'lowpass'; filter.frequency.value = 400; filter.Q.value = 0.8;
     const buf = makePinkNoiseBuffer(audioCtx.sampleRate, 24);
     const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
     src.connect(filter); filter.connect(g);
@@ -415,25 +403,25 @@ header{
     channels.rain = { gain:g, on:false, vol:0.4 };
   }
 
-  // Vinyl Crackle: subtle hum with rare soft pops
+  // Vinyl Crackle: very subtle hum with rare soft pops
   function initCrackle(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 900; filter.Q.value = 1.4;
+    filter.type = 'lowpass'; filter.frequency.value = 700; filter.Q.value = 1.2;
     const buf = makeNoiseBuffer(audioCtx.sampleRate, 30, 'crackle');
     const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
     src.connect(filter); filter.connect(g);
     src.start();
-    channels.crackle = { gain:g, on:false, vol:0.3 };
+    channels.crackle = { gain:g, on:false, vol:0.25 };
   }
 
   // Cosmic Chimes: soft gentle tones at long intervals with reverb
   function initChimes(){
     const g = audioCtx.createGain(); g.gain.value = 0; g.connect(masterGain);
     const convolver = audioCtx.createConvolver();
-    convolver.buffer = makeReverbBuffer(audioCtx.sampleRate, 2.6);
+    convolver.buffer = makeReverbBuffer(audioCtx.sampleRate, 2.8);
     convolver.connect(g);
-    channels.chimes = { gain:g, on:false, vol:0.35, convolver };
+    channels.chimes = { gain:g, on:false, vol:0.3, convolver };
     scheduleChime();
   }
 
@@ -446,12 +434,12 @@ header{
       const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value = freq;
       const env = audioCtx.createGain();
       env.gain.setValueAtTime(0, now);
-      env.gain.linearRampToValueAtTime(0.16, now + 0.12);
-      env.gain.exponentialRampToValueAtTime(0.0005, now + 3.6);
+      env.gain.linearRampToValueAtTime(0.14, now + 0.15);
+      env.gain.exponentialRampToValueAtTime(0.0005, now + 4);
       osc.connect(env); env.connect(channels.chimes.convolver);
-      osc.start(now); osc.stop(now + 3.8);
+      osc.start(now); osc.stop(now + 4.2);
       scheduleChime();
-    }, 5000 + Math.random()*7000);
+    }, 6000 + Math.random()*8000);
   }
 
   function makeReverbBuffer(sampleRate, duration){
@@ -461,7 +449,7 @@ header{
       const data = buf.getChannelData(ch);
       for(let i=0;i<len;i++){
         const t = i/sampleRate;
-        data[i] = (Math.random()*2-1) * Math.exp(-t * 2.4);
+        data[i] = (Math.random()*2-1) * Math.exp(-t * 2.6);
       }
     }
     return buf;
@@ -482,7 +470,7 @@ header{
       b5 = -0.7616*b5 - white*0.0168980;
       b6 = white*0.115926;
       data[i] = white + b0 + b1 + b2 + b3 + b4 + b5 + b6 + white*0.5362;
-      data[i] *= 0.12;
+      data[i] *= 0.1;
     }
     return buf;
   }
@@ -492,19 +480,19 @@ header{
     const buf = audioCtx.createBuffer(1, len, sampleRate);
     const data = buf.getChannelData(0);
     let brown=0;
-    let nextPop = 1500 + Math.random()*3000;
+    let nextPop = 2000 + Math.random()*4000;
     for(let i=0;i<len;i++){
       const white = Math.random()*2-1;
-      brown += white*0.015;
+      brown += white*0.01;
       brown *= 0.997;
-      let sample = brown*0.7;
+      let sample = brown*0.5;
       if(kind==='crackle' && i>=nextPop){
-        const amp = 0.12 + Math.random()*0.18;
-        const span = 18 + Math.random()*70;
+        const amp = 0.08 + Math.random()*0.12;
+        const span = 15 + Math.random()*60;
         for(let j=0;j<span && i+j<len;j++){
-          data[i+j] += amp * Math.exp(-j/20) * (Math.random()*2-1) * 0.3;
+          data[i+j] += amp * Math.exp(-j/24) * (Math.random()*2-1) * 0.25;
         }
-        nextPop += 2600 + Math.random()*7000;
+        nextPop += 3000 + Math.random()*8000;
       }
       data[i] = sample;
     }
@@ -519,14 +507,14 @@ header{
     const now = audioCtx.currentTime;
     const seq = [523.25, 659.25, 783.99, 1046.50];
     seq.forEach((f,i)=>{
-      const t = now + i*0.15;
+      const t = now + i*0.16;
       const osc = audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value=f;
       const g = audioCtx.createGain();
       g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.14, t+0.07);
-      g.gain.exponentialRampToValueAtTime(0.0005, t+0.55);
+      g.gain.linearRampToValueAtTime(0.12, t+0.08);
+      g.gain.exponentialRampToValueAtTime(0.0005, t+0.6);
       osc.connect(g); g.connect(masterGain);
-      osc.start(t); osc.stop(t+0.6);
+      osc.start(t); osc.stop(t+0.7);
     });
   }
 
@@ -542,8 +530,6 @@ header{
 
   // ---------------- Canvas: single slow aurora wave ----------------
   let width=0, height=0, dpr=1;
-  let pointer={x:0,y:0};
-  let intensity=0;
 
   function resize(){
     width = innerWidth;
@@ -558,48 +544,29 @@ header{
   window.addEventListener('resize', resize);
   resize();
 
-  // Subtle pointer glow only (no trails/circles)
-  window.addEventListener('mousemove', e=>{
-    pointer.x = e.clientX; pointer.y = e.clientY;
-    intensity = Math.min(1, intensity + 0.15);
-  });
-  window.addEventListener('touchmove', e=>{
-    const t = e.touches[0];
-    pointer.x = t.clientX; pointer.y = t.clientY;
-    intensity = Math.min(1, intensity + 0.15);
-  }, {passive:false});
-
   const layers = [
-    { baseY:0.42, amp:50, freq:0.0009, spd:0.00004, color:[0,243,255], noiseAmp:6 },
-    { baseY:0.52, amp:60, freq:0.0007, spd:-0.00003, color:[112,0,255], noiseAmp:7 },
-    { baseY:0.60, amp:42, freq:0.0011, spd:0.00005, color:[0,255,170], noiseAmp:5 },
+    { baseY:0.45, amp:45, freq:0.0006, spd:0.000025, color:[0,243,255], noiseAmp:4 },
+    { baseY:0.55, amp:55, freq:0.0005, spd:-0.00002, color:[112,0,255], noiseAmp:5 },
+    { baseY:0.62, amp:38, freq:0.0008, spd:0.00003, color:[0,255,170], noiseAmp:3 },
   ];
 
   function drawAurora(t){
     const bass = getBassEnergy();
     const grad = ctx.createLinearGradient(0,0,0,height);
-    grad.addColorStop(0, '#05070a');
-    grad.addColorStop(1, '#0a0d15');
+    grad.addColorStop(0, '#040609');
+    grad.addColorStop(1, '#090b12');
     ctx.fillStyle = grad;
     ctx.fillRect(0,0,width,height);
 
-    intensity += (0 - intensity) * 0.015;
-
     for(const l of layers){
       const pts = [];
-      const steps = Math.ceil(width/5);
+      const steps = Math.ceil(width/6);
       for(let i=0;i<=steps;i++){
         const x = (width/steps)*i;
         let y = height*l.baseY;
-        y += Math.sin(x*l.freq + t*l.spd*600) * l.amp;
-        y += Math.sin(x*l.freq*2.1 + t*l.spd*300) * l.amp*0.3;
-        y += Math.sin(x*l.freq*0.3 + t*0.0005) * l.noiseAmp;
-        const dx = x - pointer.x;
-        const dy = height*l.baseY - pointer.y;
-        const dist = Math.sqrt(dx*dx+dy*dy);
-        if(dist < 500){
-          y += Math.sin(t*0.001 + i) * (500-dist) * 0.02 * intensity;
-        }
+        y += Math.sin(x*l.freq + t*l.spd*400) * l.amp;
+        y += Math.sin(x*l.freq*2.2 + t*l.spd*200) * l.amp*0.25;
+        y += Math.sin(x*l.freq*0.25 + t*0.0003) * l.noiseAmp;
         pts.push([x,y]);
       }
       ctx.beginPath();
@@ -608,16 +575,16 @@ header{
       ctx.lineTo(width, height);
       ctx.lineTo(0, height);
       ctx.closePath();
-      const a = 0.05 + intensity*0.06 + bass*0.04;
+      const a = 0.04 + bass*0.03;
       ctx.fillStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${a})`;
       ctx.fill();
 
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
       for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
-      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.12 + intensity*0.1 + bass*0.08})`;
-      ctx.lineWidth = 1.1;
-      ctx.shadowBlur = 10 + bass*20;
+      ctx.strokeStyle = `rgba(${l.color[0]},${l.color[1]},${l.color[2]},${0.08 + bass*0.06})`;
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 8 + bass*12;
       ctx.shadowColor = `rgb(${l.color[0]},${l.color[1]},${l.color[2]})`;
       ctx.stroke();
       ctx.shadowBlur = 0;
@@ -641,8 +608,7 @@ header{
     pomodoro.mode = mode;
     pomodoro.left = mode==='work' ? pomodoro.work : pomodoro.break;
     pomodoro.running = false;
-    $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-    $('timerStart').classList.remove('playing');
+    $('timerStart').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     timerRender();
     $('timerStatus').textContent = '';
   }
@@ -652,18 +618,15 @@ header{
     pomodoro.last = performance.now();
     const btn = $('timerStart');
     if(pomodoro.running){
-      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
-      btn.classList.add('playing');
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
     } else {
-      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-      btn.classList.remove('playing');
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     }
   }
   function timerReset(){
     pomodoro.running = false;
     pomodoro.left = pomodoro.mode==='work' ? pomodoro.work : pomodoro.break;
-    $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-    $('timerStart').classList.remove('playing');
+    $('timerStart').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     timerRender();
     $('timerStatus').textContent = '';
   }
@@ -679,8 +642,7 @@ header{
       pomodoro.running = false;
       playAlert();
       $('timerStatus').textContent = 'Session complete';
-      $('timerStart').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-      $('timerStart').classList.remove('playing');
+      $('timerStart').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
       timerRender();
       return;
     }
@@ -743,7 +705,6 @@ header{
   });
   masterEl.dispatchEvent(new Event('input'));
 
-  // Audio resume on first interaction
   window.addEventListener('pointerdown', startAudio, {once:true});
   window.addEventListener('touchstart', startAudio, {once:true});
   window.addEventListener('keydown', startAudio, {once:true});
