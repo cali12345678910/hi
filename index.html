@@ -1,334 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wave Runner — Aurora</title>
+<title>مكتبة الأحاديث</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;background:#090b10;color:#eaeaf0;font-family:'Inter',system-ui,sans-serif;touch-action:none}
-  canvas{display:block;touch-action:none}
-  .hud{position:fixed;top:16px;left:50%;transform:translateX(-50%);text-align:center;z-index:5;pointer-events:none}
-  .hud .score{font-size:34px;font-weight:800;letter-spacing:-1px;text-shadow:0 0 24px rgba(0,243,255,.6)}
-  .hud .best{font-size:12px;opacity:.6;margin-top:2px;letter-spacing:1px}
-  .btn-gear{position:fixed;top:16px;right:16px;z-index:6;width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(12,14,24,.55);backdrop-filter:blur(14px);color:#eaeaf0;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-  .modal{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(9,11,16,.6);backdrop-filter:blur(8px)}
-  .modal.hidden{display:none}
-  .card{background:rgba(12,14,24,.75);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;width:min(420px,90vw)}
-  .card h2{font-size:18px;font-weight:700;margin-bottom:16px}
-  .card h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin:12px 0 8px}
-  .row{display:flex;gap:8px;flex-wrap:wrap}
-  .card button{flex:1;min-width:90px;padding:10px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#eaeaf0;font-size:12px;cursor:pointer;transition:.2s}
-  .card button.active{background:linear-gradient(135deg,#00f3ff,#7000ff);border-color:transparent;color:#fff}
-  .card button:hover:not(.active){background:rgba(255,255,255,.1)}
-  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:7;background:rgba(9,11,16,.55);backdrop-filter:blur(6px)}
-  .overlay.hidden{display:none}
-  .overlay h1{font-size:60px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,#fff,#00f3ff 50%,#00ffaa);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .overlay p{margin-top:12px;opacity:.7;font-size:16px}
-  .overlay .btn{margin-top:28px;padding:14px 44px;border-radius:999px;border:none;background:#fff;color:#090b10;font-weight:700;font-size:15px;cursor:pointer}
-  .overlay .btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,243,255,.4)}
-  .close{margin-top:16px;padding:10px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#eaeaf0;cursor:pointer}
+  body{font-family:'Cairo','Amiri',serif}
+  .amiri{font-family:'Amiri',serif}
+  .card{transition:transform .2s ease}
+  .card:hover{transform:translateY(-2px)}
+  .toast{transition:opacity .3s}
 </style>
 </head>
-<body>
-<canvas id="c"></canvas>
-<div class="hud">
-  <div class="score" id="score">0</div>
-  <div class="best" id="best">best 0</div>
-</div>
-<button class="btn-gear" id="gear">⚙</button>
-<div class="modal hidden" id="modal">
-  <div class="card">
-    <h2>Customize</h2>
-    <h3>Shape</h3>
-    <div class="row" id="shapes">
-      <button data-v="arrow" class="active">Arrow</button>
-      <button data-v="diamond">Diamond</button>
-      <button data-v="sphere">Sphere</button>
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen">
+  <header class="sticky top-0 z-20 bg-white/90 dark:bg-black/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <h1 class="text-xl font-bold">مكتبة الأحاديث</h1>
+      <div class="flex items-center gap-2 flex-1 justify-end">
+        <input id="search" type="text" placeholder="بحث..." class="w-full max-w-xs px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent text-sm focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white" />
+        <button id="themeToggle" class="p-2 rounded-lg border border-gray-300 dark:border-gray-700" aria-label="theme">◐</button>
+      </div>
     </div>
-    <h3>Palette</h3>
-    <div class="row" id="palettes">
-      <button data-v="aurora" class="active">Aurora</button>
-      <button data-v="cyber">Cyber</button>
-      <button data-v="arctic">Arctic</button>
-    </div>
-    <h3>Trail</h3>
-    <div class="row" id="trails">
-      <button data-v="ribbon" class="active">Ribbon</button>
-      <button data-v="particles">Particles</button>
-      <button data-v="wireframe">Wireframe</button>
-    </div>
-    <button class="close" id="close">Close</button>
-  </div>
-</div>
-<div class="overlay" id="start">
-  <h1>Wave Runner</h1>
-  <p>Hold Space / click / tap to rise · Release to fall</p>
-  <button class="btn" id="play">Play</button>
-</div>
-<div class="overlay hidden" id="over">
-  <h1>Crashed</h1>
-  <p id="finalscore">0</p>
-  <button class="btn" id="retry">Retry</button>
-</div>
+  </header>
+
+  <nav class="max-w-3xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
+    <button data-cat="all" class="catBtn px-4 py-2 rounded-full text-sm whitespace-nowrap bg-black text-white dark:bg-white dark:text-black">الكل</button>
+    <button data-cat="hisn" class="catBtn px-4 py-2 rounded-full text-sm whitespace-nowrap border border-gray-300 dark:border-gray-700">حصن المسلم</button>
+    <button data-cat="morning" class="catBtn px-4 py-2 rounded-full text-sm whitespace-nowrap border border-gray-300 dark:border-gray-700">أذكار الصباح والمساء</button>
+    <button data-cat="nawawi" class="catBtn px-4 py-2 rounded-full text-sm whitespace-nowrap border border-gray-300 dark:border-gray-700">الأربعين النووية</button>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-4 py-4">
+    <div id="list" class="space-y-4"></div>
+    <div id="empty" class="hidden text-center text-gray-500 py-12">لا توجد نتائج</div>
+  </main>
+
+  <div id="toast" class="toast fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded-lg text-sm opacity-0 pointer-events-none">تم النسخ</div>
+
 <script>
-(() => {
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  let dpr = Math.min(window.devicePixelRatio || 1, 2);
-  function resize(){ canvas.width = innerWidth*dpr; canvas.height = innerHeight*dpr; canvas.style.width = innerWidth+'px'; canvas.style.height = innerHeight+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);}
-  resize(); addEventListener('resize', resize);
+const DATA = [
+  {id:1,cat:'hisn',title:'دعاء الاستيقاظ من النوم',text:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',ref:'رواه البخاري [صحيح]'},
+  {id:2,cat:'hisn',title:'دعاء لبس الثوب',text:'الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا الثَّوْبَ وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',ref:'رواه أبو داود والترمذي [حسن]'},
+  {id:3,cat:'morning',title:'أذكار الصباح',text:'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',ref:'رواه مسلم [صحيح]'},
+  {id:4,cat:'morning',title:'سيد الاستغفار',text:'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',ref:'رواه البخاري [صحيح]'},
+  {id:5,cat:'morning',title:'أذكار المساء',text:'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ',ref:'رواه مسلم [صحيح]'},
+  {id:6,cat:'hisn',title:'دعاء دخول المنزل',text:'بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',ref:'رواه أبو داود [حسن]'},
+  {id:7,cat:'hisn',title:'دعاء الخروج من المنزل',text:'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',ref:'رواه أبو داود والترمذي [صحيح]'},
+  {id:8,cat:'hisn',title:'دعاء دخول المسجد',text:'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',ref:'رواه مسلم [صحيح]'},
+  {id:9,cat:'hisn',title:'دعاء الخروج من المسجد',text:'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',ref:'رواه مسلم [صحيح]'},
+  {id:10,cat:'nawawi',title:'الحديث الأول (النيات)',text:'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى، فَمَنْ كَانَتْ هِجْرَتُهُ إِلَى اللَّهِ وَرَسُولِهِ فَهِجْرَتُهُ إِلَى اللَّهِ وَرَسُولِهِ، وَمَنْ كَانَتْ هِجْرَتُهُ لِدُنْيَا يُصِيبُهَا أَوِ امْرَأَةٍ يَنْكِحُهَا فَهِجْرَتُهُ إِلَى مَا هَاجَرَ إِلَيْهِ',ref:'رواه البخاري ومسلم [متفق عليه]'},
+  {id:11,cat:'nawawi',title:'الحديث الثاني (الإسلام والإيمان)',text:'بُنِيَ الإِسْلَامُ عَلَى خَمْسٍ: شَهَادَةِ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ، وَإِقَامِ الصَّلَاةِ، وَإِيتَاءِ الزَّكَاةِ، وَالْحَجِّ، وَصَوْمِ رَمَضَانَ',ref:'رواه البخاري ومسلم [متفق عليه]'},
+  {id:12,cat:'nawawi',title:'الحديث الثالث (أركان الإسلام)',text:'الإِسْلَامُ أَنْ تَشْهَدَ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ، وَتُقِيمَ الصَّلَاةَ، وَتُؤْتِيَ الزَّكَاةَ، وَتَصُومَ رَمَضَانَ، وَتَحُجَّ الْبَيْتَ إِنِ اسْتَطَعْتَ إِلَيْهِ سَبِيلًا',ref:'رواه مسلم [صحيح]'},
+  {id:13,cat:'hisn',title:'دعاء بعد التشهد',text:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، وَمِنْ عَذَابِ جَهَنَّمَ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ',ref:'رواه البخاري ومسلم [متفق عليه]'},
+  {id:14,cat:'hisn',title:'دعاء الاستخارة',text:'اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ، فَإِنَّكَ تَقْدِرُ وَلَا أَقْدِرُ، وَتَعْلَمُ وَلَا أَعْلَمُ، وَأَنْتَ عَلَّامُ الْغُيُوبِ',ref:'رواه البخاري [صحيح]'},
+  {id:15,cat:'hisn',title:'دعاء السفر',text:'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ، وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ',ref:'رواه مسلم [صحيح]'},
+];
 
-  const PALETTES = {
-    aurora: { p:'#00f3ff', t1:'#00f3ff', t2:'#7000ff', t3:'#00ffaa', wall:'#00f3ff', hazard:'#7000ff', glow:'rgba(0,243,255,.35)' },
-    cyber:  { p:'#ff2d95', t1:'#ff2d95', t2:'#ffd700', t3:'#ff6ec7', wall:'#ff2d95', hazard:'#ffd700', glow:'rgba(255,45,149,.35)' },
-    arctic: { p:'#e2e8f0', t1:'#e2e8f0', t2:'#00ffaa', t3:'#94a3b8', wall:'#e2e8f0', hazard:'#00ffaa', glow:'rgba(226,232,240,.35)' }
-  };
-  let palette='aurora', shape='arrow', trailType='ribbon';
-  let state='menu', score=0, best=+localStorage.getItem('wr_best')||0, speed=320, dist=0;
-  let holding=false, player={x:0,y:0,vy:0}, trailBuf=[], particles=[];
-  let walls=[], hazards=[], spawnX=0, lastT=0;
-  const W=()=>innerWidth, H=()=>innerHeight;
-  const CEIL=()=>H()*0.12, FLOOR=()=>H()*0.88;
+const favs = new Set(JSON.parse(localStorage.getItem('hadith_favs')||'[]'));
+let cat='all';
+let q='';
 
-  // noise for smooth slopes
-  function noise(x){ return (Math.sin(x*0.0017)+Math.sin(x*0.0031+1.7)+Math.sin(x*0.0009+3.3))/3; }
+const dark = localStorage.getItem('hadith_theme')==='dark';
+if(dark) document.documentElement.classList.add('dark');
 
-  function reset(){
-    score=0; dist=0; speed=320;
-    player.x=W()*0.22; player.y=H()*0.5;
-    trailBuf=[]; particles=[]; walls=[]; hazards=[]; spawnX=player.x+100;
-    holding=false;
-    document.getElementById('score').textContent='0';
-  }
+function saveFavs(){localStorage.setItem('hadith_favs',JSON.stringify([...favs]));}
 
-  function gapWidth(){ return Math.max(180, 280 - score*0.02); }
-
-  function ensureWorld(){
-    const ahead=player.x+W()*1.6;
-    while(spawnX<ahead){
-      const segW=140+Math.random()*60;
-      const center = H()*0.5 + noise(spawnX)*H()*0.18;
-      const g = gapWidth();
-      const topBase = center - g/2;
-      const botBase = center + g/2;
-      const slopeTop = noise(spawnX+100)*0.6;
-      const slopeBot = noise(spawnX+200)*0.6;
-      walls.push({x:spawnX,w:segW,top0:topBase,slopeTop,bot0:botBase,slopeBot});
-      // hazard diamond in open path
-      if(Math.random()<0.45){
-        const hx=spawnX+segW*0.5;
-        const hy=center + (Math.random()-0.5)*g*0.4;
-        hazards.push({x:hx,y:hy,s:16});
-      }
-      spawnX+=segW;
-    }
-    walls=walls.filter(w=>w.x+w.w>player.x-200);
-    hazards=hazards.filter(h=>h.x+h.s>player.x-200);
-  }
-
-  function wallY(w,x,top){
-    const t=x-w.x;
-    return top ? w.top0 + w.slopeTop*t : w.bot0 + w.slopeBot*t;
-  }
-  function getTop(x){ for(const w of walls) if(x>=w.x && x<=w.x+w.w) return wallY(w,x,true); return CEIL(); }
-  function getBot(x){ for(const w of walls) if(x>=w.x && x<=w.x+w.w) return wallY(w,x,false); return FLOOR(); }
-
-  function update(dt){
-    if(state!=='play') return;
-    speed = 320 + Math.min(200, score*0.8);
-    player.vy = holding ? -speed : speed;
-    player.x += speed*dt;
-    player.y += player.vy*dt;
-    dist += speed*dt;
-    score = Math.floor(dist/10);
-    document.getElementById('score').textContent = score;
-    if(score>best){ best=score; localStorage.setItem('wr_best',best); document.getElementById('best').textContent='best '+best; }
-
-    ensureWorld();
-    trailBuf.unshift({x:player.x,y:player.y,t:performance.now()});
-    if(trailBuf.length>60) trailBuf.pop();
-
-    if(trailType==='particles' && Math.random()<0.7){
-      particles.push({x:player.x,y:player.y,vx:-speed*0.35,vy:(Math.random()-0.5)*50,life:1,r:1.5+Math.random()*2});
-    }
-    particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*2;});
-    particles=particles.filter(p=>p.life>0);
-
-    const top=getTop(player.x), bot=getBot(player.x);
-    if(player.y < top+11 || player.y > bot-11){ crash(); return; }
-    for(const h of hazards){
-      const dx=Math.abs(player.x-h.x), dy=Math.abs(player.y-h.y);
-      if(dx<12 && dy<12){ crash(); return; }
-    }
-  }
-
-  function crash(){
-    state='over';
-    document.getElementById('finalscore').textContent=score;
-    document.getElementById('over').classList.remove('hidden');
-  }
-
-  function drawAurora(t){
-    const g=ctx.createLinearGradient(0,0,0,H());
-    g.addColorStop(0,'#090b10'); g.addColorStop(1,'#121826');
-    ctx.fillStyle=g; ctx.fillRect(0,0,W(),H());
-    const layers=[
-      {c:'rgba(0,243,255,0.16)',amp:70,freq:0.0028,spd:0.00012,y:0.32},
-      {c:'rgba(112,0,255,0.14)',amp:90,freq:0.0022,spd:-0.00009,y:0.5},
-      {c:'rgba(0,255,170,0.12)',amp:60,freq:0.0035,spd:0.00015,y:0.68}
-    ];
-    layers.forEach(l=>{
-      ctx.beginPath(); ctx.moveTo(0,H()*l.y);
-      for(let x=0;x<=W();x+=3){
-        const y=H()*l.y+Math.sin(x*l.freq+t*l.spd*1000)*l.amp+Math.sin(x*l.freq*2.1+t*l.spd*500)*l.amp*0.4;
-        ctx.lineTo(x,y);
-      }
-      ctx.lineTo(W(),H()); ctx.lineTo(0,H()); ctx.closePath();
-      ctx.fillStyle=l.c; ctx.fill();
-      ctx.beginPath();
-      for(let x=0;x<=W();x+=3){
-        const y=H()*l.y+Math.sin(x*l.freq+t*l.spd*1000)*l.amp+Math.sin(x*l.freq*2.1+t*l.spd*500)*l.amp*0.4;
-        if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-      }
-      ctx.strokeStyle=l.c.replace(/[\d.]+\)$/,'0.55)'); ctx.lineWidth=1.5; ctx.shadowBlur=18; ctx.shadowColor=l.c; ctx.stroke(); ctx.shadowBlur=0;
-    });
-  }
-
-  function draw(dt,t){
-    const pal=PALETTES[palette];
-    drawAurora(t);
-    const camX=player.x-W()*0.22;
-    // walls
-    for(const w of walls){
-      const x0=w.x-camX;
-      ctx.beginPath(); ctx.moveTo(x0,0);
-      for(let i=0;i<=w.w;i+=4) ctx.lineTo(x0+i,wallY(w,w.x+i,true));
-      ctx.lineTo(x0+w.w,0); ctx.closePath();
-      ctx.fillStyle='rgba(12,14,24,0.9)'; ctx.fill();
-      ctx.beginPath();
-      for(let i=0;i<=w.w;i+=4){const y=wallY(w,w.x+i,true); if(i===0)ctx.moveTo(x0+i,y);else ctx.lineTo(x0+i,y);}
-      ctx.strokeStyle=pal.wall; ctx.lineWidth=2; ctx.shadowBlur=14; ctx.shadowColor=pal.wall; ctx.stroke(); ctx.shadowBlur=0;
-      ctx.beginPath(); ctx.moveTo(x0,H());
-      for(let i=0;i<=w.w;i+=4) ctx.lineTo(x0+i,wallY(w,w.x+i,false));
-      ctx.lineTo(x0+w.w,H()); ctx.closePath();
-      ctx.fillStyle='rgba(12,14,24,0.9)'; ctx.fill();
-      ctx.beginPath();
-      for(let i=0;i<=w.w;i+=4){const y=wallY(w,w.x+i,false); if(i===0)ctx.moveTo(x0+i,y);else ctx.lineTo(x0+i,y);}
-      ctx.strokeStyle=pal.wall; ctx.lineWidth=2; ctx.shadowBlur=14; ctx.shadowColor=pal.wall; ctx.stroke(); ctx.shadowBlur=0;
-    }
-    // hazards
-    for(const h of hazards){
-      const hx=h.x-camX;
-      ctx.save(); ctx.shadowBlur=18; ctx.shadowColor=pal.hazard;
-      ctx.strokeStyle=pal.hazard; ctx.lineWidth=2; ctx.fillStyle='rgba(112,0,255,0.15)';
-      ctx.beginPath();
-      ctx.moveTo(hx,h.y-h.s); ctx.lineTo(hx+h.s,h.y); ctx.lineTo(hx,h.y+h.s); ctx.lineTo(hx-h.s,h.y); ctx.closePath();
-      ctx.fill(); ctx.stroke(); ctx.restore();
-    }
-    // trail
-    const px=player.x-camX, py=player.y;
-    if(trailType==='ribbon'){
-      ctx.save();
-      for(let i=0;i<trailBuf.length-1;i++){
-        const a=trailBuf[i], b=trailBuf[i+1];
-        const alpha=0.85*(1-i/trailBuf.length);
-        const g=ctx.createLinearGradient(a.x-camX,a.y,b.x-camX,b.y);
-        g.addColorStop(0,hexA(pal.t1,alpha)); g.addColorStop(1,hexA(pal.t2,alpha*0.5));
-        ctx.strokeStyle=g; ctx.lineWidth=3; ctx.shadowBlur=10; ctx.shadowColor=pal.t1;
-        ctx.beginPath(); ctx.moveTo(a.x-camX,a.y); ctx.lineTo(b.x-camX,b.y); ctx.stroke();
-      }
-      ctx.restore();
-    } else if(trailType==='particles'){
-      for(const p of particles){
-        ctx.save(); ctx.globalAlpha=p.life;
-        ctx.fillStyle=pal.t2; ctx.shadowBlur=6; ctx.shadowColor=pal.t2;
-        ctx.beginPath(); ctx.arc(p.x-camX,p.y,p.r,0,Math.PI*2); ctx.fill();
-        ctx.restore();
-      }
-    } else {
-      ctx.save();
-      ctx.strokeStyle=pal.t1; ctx.lineWidth=1.5; ctx.shadowBlur=8; ctx.shadowColor=pal.t1;
-      ctx.beginPath();
-      for(let i=0;i<trailBuf.length;i++){
-        const p=trailBuf[i];
-        if(i===0) ctx.moveTo(p.x-camX,p.y); else ctx.lineTo(p.x-camX,p.y);
-      }
-      ctx.stroke();
-      ctx.strokeStyle=pal.t3; ctx.lineWidth=1; ctx.shadowBlur=6; ctx.shadowColor=pal.t3;
-      ctx.beginPath();
-      for(let i=0;i<trailBuf.length;i++){
-        const p=trailBuf[i];
-        if(i===0) ctx.moveTo(p.x-camX,p.y+6); else ctx.lineTo(p.x-camX,p.y+6);
-      }
-      ctx.stroke();
-      ctx.restore();
-    }
-    // player
-    ctx.save(); ctx.shadowBlur=22; ctx.shadowColor=pal.p; ctx.fillStyle=pal.p;
-    ctx.translate(px,py);
-    if(shape==='arrow'){
-      ctx.beginPath(); ctx.moveTo(14,0); ctx.lineTo(-10,-10); ctx.lineTo(-10,10); ctx.closePath(); ctx.fill();
-    } else if(shape==='diamond'){
-      ctx.beginPath(); ctx.moveTo(0,-13); ctx.lineTo(13,0); ctx.lineTo(0,13); ctx.lineTo(-13,0); ctx.closePath(); ctx.fill();
-    } else {
-      ctx.beginPath(); ctx.arc(0,0,11,0,Math.PI*2); ctx.fill();
-      ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=2; ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  function hexA(hex,a){
-    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-    return `rgba(${r},${g},${b},${a})`;
-  }
-
-  let raf;
-  function loop(t){
-    const dt=Math.min(0.033,(t-lastT)/1000); lastT=t;
-    update(dt); draw(dt,t);
-    raf=requestAnimationFrame(loop);
-  }
-
-  function startPlay(){
-    document.getElementById('start').classList.add('hidden');
-    document.getElementById('over').classList.add('hidden');
-    document.getElementById('modal').classList.add('hidden');
-    reset(); state='play'; lastT=performance.now();
-  }
-  document.getElementById('play').onclick=startPlay;
-  document.getElementById('retry').onclick=startPlay;
-
-  function down(){ if(state==='play') holding=true; }
-  function up(){ if(state==='play') holding=false; }
-  addEventListener('mousedown', down);
-  addEventListener('mouseup', up);
-  addEventListener('touchstart', e=>{e.preventDefault();down();},{passive:false});
-  addEventListener('touchend', e=>{e.preventDefault();up();},{passive:false});
-  addEventListener('keydown', e=>{
-    if(e.code==='Space'){ e.preventDefault(); down(); }
-    if(state!=='play' && e.code==='Space') startPlay();
+function filtered(){
+  return DATA.filter(d=>{
+    if(cat!=='all' && d.cat!==cat) return false;
+    if(q){const t=(d.title+d.text+d.ref).toLowerCase(); if(!t.includes(q.toLowerCase())) return false;}
+    return true;
   });
-  addEventListener('keyup', e=>{ if(e.code==='Space') up(); });
+}
 
-  document.getElementById('gear').onclick=()=>document.getElementById('modal').classList.remove('hidden');
-  document.getElementById('close').onclick=()=>document.getElementById('modal').classList.add('hidden');
+function escape(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-  function wire(id,setter){
-    document.getElementById(id).querySelectorAll('button').forEach(b=>{
-      b.onclick=()=>{
-        document.getElementById(id).querySelectorAll('button').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active'); setter(b.dataset.v);
-      };
-    });
-  }
-  wire('shapes', v=>shape=v);
-  wire('palettes', v=>palette=v);
-  wire('trails', v=>trailType=v);
+function render(){
+  const list=document.getElementById('list');
+  const items=filtered();
+  document.getElementById('empty').classList.toggle('hidden', items.length>0);
+  list.innerHTML=items.map(d=>`
+    <article class="card border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+      <h2 class="text-base font-semibold mb-3">${escape(d.title)}</h2>
+      <p class="amiri text-xl leading-loose text-right" dir="rtl">${escape(d.text)}</p>
+      <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2">
+        <span class="text-xs text-gray-500">${escape(d.ref)}</span>
+        <div class="flex gap-3 text-gray-600 dark:text-gray-400">
+          <button data-copy="${d.id}" title="نسخ" class="hover:text-black dark:hover:text-white">📋</button>
+          <button data-share="${d.id}" title="مشاركة" class="hover:text-black dark:hover:text-white">↗</button>
+          <button data-fav="${d.id}" title="مفضلة" class="hover:text-black dark:hover:text-white ${favs.has(d.id)?'text-red-500':''}">${favs.has(d.id)?'♥':'♡'}</button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+  list.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{
+    const d=DATA.find(x=>x.id==b.dataset.copy);
+    navigator.clipboard.writeText(d.text).then(()=>{const t=document.getElementById('toast');t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1500);});
+  });
+  list.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{
+    const id=+b.dataset.fav; if(favs.has(id)) favs.delete(id); else favs.add(id); saveFavs(); render();
+  });
+  list.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>{
+    const d=DATA.find(x=>x.id==b.dataset.share);
+    if(navigator.share) navigator.share({text:d.text}); else {navigator.clipboard.writeText(d.text);const t=document.getElementById('toast');t.textContent='تم نسخ النص';t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1500);}
+  });
+}
 
-  document.getElementById('best').textContent='best '+best;
-  requestAnimationFrame(loop);
-})();
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value;render();});
+document.querySelectorAll('.catBtn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.catBtn').forEach(x=>{x.classList.remove('bg-black','text-white','dark:bg-white','dark:text-black');x.classList.add('border','border-gray-300','dark:border-gray-700');});
+  b.classList.add('bg-black','text-white','dark:bg-white','dark:text-black'); b.classList.remove('border','border-gray-300','dark:border-gray-700');
+  cat=b.dataset.cat; render();
+});
+document.getElementById('themeToggle').onclick=()=>{
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('hadith_theme', document.documentElement.classList.contains('dark')?'dark':'light');
+};
+
+render();
 </script>
 </body>
 </html>
